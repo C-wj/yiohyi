@@ -1,0 +1,12 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "t-tabs": "tdesign-miniprogram/tabs/tabs",
+    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-stepper": "tdesign-miniprogram/stepper/stepper",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-calendar": "tdesign-miniprogram/calendar/calendar",
+    "t-toast": "tdesign-miniprogram/toast/toast"
+  }
+} 

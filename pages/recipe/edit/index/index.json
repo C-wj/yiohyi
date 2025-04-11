@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "编辑菜谱",
+  "navigationBarBackgroundColor": "#FF9500",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "t-toast": "tdesign-miniprogram/toast/toast"
+  }
+} 

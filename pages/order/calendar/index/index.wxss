@@ -1,0 +1,233 @@
+/* 整体容器 */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+  background-color: #f5f5f5;
+}
+
+/* 顶部状态栏 */
+.status-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-button {
+  padding: 10rpx;
+}
+
+.title {
+  flex: 1;
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-right: 58rpx; /* 为了标题居中，平衡左侧按钮宽度 */
+}
+
+/* 日历头部 */
+.calendar-header {
+  background-color: #ffffff;
+  padding: 20rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+}
+
+.month-arrow {
+  padding: 10rpx;
+}
+
+.month-display {
+  font-size: 34rpx;
+  font-weight: bold;
+  margin: 0 40rpx;
+}
+
+/* 星期表头 */
+.week-header {
+  display: flex;
+  border-bottom: 2rpx solid #f0f0f0;
+  padding-bottom: 20rpx;
+}
+
+.week-cell {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666666;
+}
+
+/* 日历网格 */
+.calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #ffffff;
+  padding: 0 30rpx 30rpx;
+}
+
+.calendar-day {
+  width: calc(100% / 7);
+  height: 80rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 20rpx;
+}
+
+.day-number {
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+.current-month {
+  color: #333333;
+}
+
+.other-month {
+  color: #aaaaaa;
+}
+
+.today {
+  position: relative;
+}
+
+.today .day-number {
+  background-color: #0052d9;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selected-day {
+  position: relative;
+}
+
+.selected-day .day-number {
+  background-color: rgba(0, 82, 217, 0.1);
+  border: 2rpx solid #0052d9;
+  color: #0052d9;
+  border-radius: 50%;
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-indicator {
+  position: absolute;
+  bottom: 4rpx;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background-color: #0052d9;
+}
+
+/* 日期菜单详情 */
+.day-menu {
+  margin: 30rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.day-title {
+  padding: 30rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.menu-content {
+  padding: 20rpx 0;
+}
+
+.custom-tabs {
+  --td-tab-nav-bg-color: #ffffff;
+  --td-tab-track-color: #0052d9;
+  --td-tab-active-color: #0052d9;
+}
+
+/* 菜单列表 */
+.menu-list {
+  padding: 20rpx 30rpx;
+  min-height: 400rpx;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+}
+
+.menu-info {
+  flex: 1;
+}
+
+.menu-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.menu-desc {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+/* 空菜单提示 */
+.empty-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  color: #999999;
+}
+
+.empty-menu text {
+  font-size: 28rpx;
+  margin-top: 20rpx;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 30rpx;
+  background-color: #ffffff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  z-index: 100;
+} 

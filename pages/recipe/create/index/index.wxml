@@ -1,0 +1,383 @@
+<view class="create-recipe-container">
+  <!-- 顶部导航 -->
+  <view class="page-header">
+    <view class="back-button" bindtap="onBack">
+      <t-icon name="chevron-left" size="48rpx" />
+    </view>
+    <view class="page-title">创建菜谱</view>
+  </view>
+  
+  <!-- 表单内容 -->
+  <view class="form-container">
+    <!-- 基本信息 -->
+    <view class="form-section">
+      <view class="section-title">基本信息</view>
+      
+      <!-- 菜谱标题 -->
+      <view class="form-item">
+        <view class="form-label required">菜谱名称</view>
+        <input 
+          class="form-input {{errors.title ? 'has-error' : ''}}" 
+          placeholder="请输入菜谱名称（2-20个字）" 
+          value="{{form.title}}"
+          maxlength="20"
+          bindinput="onTitleInput"
+        />
+        <view class="error-message" wx:if="{{errors.title}}">{{errors.title}}</view>
+      </view>
+      
+      <!-- 菜谱封面 -->
+      <view class="form-item">
+        <view class="form-label required">菜谱封面</view>
+        <view 
+          class="cover-uploader {{errors.image ? 'has-error' : ''}}" 
+          bindtap="onChooseCoverImage"
+        >
+          <image 
+            wx:if="{{form.image}}" 
+            src="{{form.image}}" 
+            mode="aspectFill" 
+            class="cover-image" 
+          />
+          <view class="uploader-placeholder" wx:else>
+            <t-icon name="add" size="80rpx" />
+            <text>上传封面图</text>
+          </view>
+        </view>
+        <view class="error-message" wx:if="{{errors.image}}">{{errors.image}}</view>
+      </view>
+      
+      <!-- 菜谱描述 -->
+      <view class="form-item">
+        <view class="form-label">菜谱简介</view>
+        <textarea 
+          class="form-textarea" 
+          placeholder="简单介绍一下这道菜（最多200字）" 
+          value="{{form.description}}"
+          maxlength="200"
+          bindinput="onDescriptionInput"
+        ></textarea>
+        <view class="char-count">{{form.description.length}}/200</view>
+      </view>
+    </view>
+    
+    <!-- 其他参数 -->
+    <view class="form-section">
+      <view class="section-title">参数设置</view>
+      
+      <view class="form-grid">
+        <!-- 难度 -->
+        <view class="grid-item">
+          <view class="form-label">难度</view>
+          <t-radio-group 
+            value="{{form.difficulty}}" 
+            bind:change="onSelectDifficulty"
+            borderless
+            t-class="difficulty-group"
+          >
+            <t-radio 
+              wx:for="{{difficultyOptions}}" 
+              wx:key="value" 
+              value="{{item.value}}" 
+              label="{{item.label}}"
+              icon="dot"
+            />
+          </t-radio-group>
+        </view>
+        
+        <!-- 烹饪时间 -->
+        <view class="grid-item">
+          <view class="form-label">烹饪时间</view>
+          <view class="stepper-container">
+            <t-stepper 
+              value="{{form.cookTime}}" 
+              min="1" 
+              max="240" 
+              step="5"
+              theme="filled"
+              bind:change="onCookTimeChange"
+            />
+            <text class="unit-text">分钟</text>
+          </view>
+        </view>
+        
+        <!-- 准备时间 -->
+        <view class="grid-item">
+          <view class="form-label">准备时间</view>
+          <view class="stepper-container">
+            <t-stepper 
+              value="{{form.prepTime}}" 
+              min="0" 
+              max="60" 
+              step="5"
+              theme="filled"
+              bind:change="onPrepTimeChange"
+            />
+            <text class="unit-text">分钟</text>
+          </view>
+        </view>
+        
+        <!-- 份量 -->
+        <view class="grid-item">
+          <view class="form-label">份量</view>
+          <view class="stepper-container">
+            <t-stepper 
+              value="{{form.servings}}" 
+              min="1" 
+              max="20" 
+              step="1"
+              theme="filled"
+              bind:change="onServingsChange"
+            />
+            <text class="unit-text">人份</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 食材 -->
+    <view class="form-section">
+      <view class="section-header">
+        <view class="section-title">食材清单</view>
+        <view class="section-action" bindtap="onAddIngredient">
+          <t-icon name="add" size="40rpx" />
+          <text>添加食材</text>
+        </view>
+      </view>
+      
+      <view class="ingredients-list">
+        <view 
+          class="ingredient-item {{errors.ingredients[index] ? 'has-error' : ''}}" 
+          wx:for="{{form.ingredients}}" 
+          wx:key="id"
+        >
+          <!-- 食材名称 -->
+          <view class="ingredient-col name-col">
+            <input 
+              class="ingredient-input" 
+              placeholder="食材名称" 
+              value="{{item.name}}"
+              data-index="{{index}}"
+              bindinput="onIngredientNameInput"
+            />
+          </view>
+          
+          <!-- 食材用量 -->
+          <view class="ingredient-col amount-col">
+            <input 
+              class="ingredient-input" 
+              placeholder="用量" 
+              type="digit"
+              value="{{item.amount}}"
+              data-index="{{index}}"
+              bindinput="onIngredientAmountInput"
+            />
+          </view>
+          
+          <!-- 单位 -->
+          <view class="ingredient-col unit-col">
+            <t-dropdown-menu>
+              <t-dropdown-item
+                label="单位"
+                value="{{item.unit}}"
+                options="{{unitOptions}}"
+                data-index="{{index}}"
+                bindchange="onSelectUnit"
+              />
+            </t-dropdown-menu>
+          </view>
+          
+          <!-- 删除按钮 -->
+          <view 
+            class="ingredient-col action-col" 
+            catchtap="onDeleteIngredient" 
+            data-index="{{index}}"
+          >
+            <t-icon name="close" size="40rpx" />
+          </view>
+        </view>
+        
+        <view class="error-message" wx:if="{{errors.ingredients[index]}}">
+          {{errors.ingredients[index]}}
+        </view>
+      </view>
+    </view>
+    
+    <!-- 烹饪步骤 -->
+    <view class="form-section">
+      <view class="section-header">
+        <view class="section-title">烹饪步骤</view>
+        <view class="section-action" bindtap="onAddStep">
+          <t-icon name="add" size="40rpx" />
+          <text>添加步骤</text>
+        </view>
+      </view>
+      
+      <view class="steps-list">
+        <view 
+          class="step-item {{errors.steps[index] ? 'has-error' : ''}}" 
+          wx:for="{{form.steps}}" 
+          wx:key="id"
+        >
+          <!-- 步骤序号 -->
+          <view class="step-number">{{index + 1}}</view>
+          
+          <view class="step-content">
+            <!-- 步骤描述 -->
+            <textarea 
+              class="step-textarea" 
+              placeholder="描述烹饪步骤内容" 
+              value="{{item.description}}"
+              data-index="{{index}}"
+              bindinput="onStepDescriptionInput"
+            ></textarea>
+            
+            <!-- 步骤图片 -->
+            <view class="step-image-container">
+              <view 
+                class="step-image-uploader" 
+                bindtap="onChooseStepImage" 
+                data-index="{{index}}"
+              >
+                <image 
+                  wx:if="{{item.image}}" 
+                  src="{{item.image}}" 
+                  mode="aspectFill" 
+                  class="step-image" 
+                  catchtap="onPreviewStepImage"
+                  data-index="{{index}}"
+                />
+                <view class="uploader-placeholder" wx:else>
+                  <t-icon name="add-circle" size="60rpx" />
+                  <text>添加图片</text>
+                </view>
+              </view>
+              
+              <!-- 小贴士输入 -->
+              <view class="step-tip-container">
+                <view class="tip-label">
+                  <t-icon name="tips" size="32rpx" />
+                  <text>小贴士</text>
+                </view>
+                <input 
+                  class="tip-input" 
+                  placeholder="可以添加烹饪技巧或注意事项" 
+                  value="{{item.tip}}"
+                  data-index="{{index}}"
+                  bindinput="onStepTipInput"
+                />
+              </view>
+            </view>
+            
+            <!-- 步骤操作 -->
+            <view class="step-actions">
+              <view class="step-action" catchtap="onMoveStepUp" data-index="{{index}}">
+                <t-icon name="arrow-up" size="40rpx" />
+              </view>
+              <view class="step-action" catchtap="onMoveStepDown" data-index="{{index}}">
+                <t-icon name="arrow-down" size="40rpx" />
+              </view>
+              <view class="step-action" catchtap="onDeleteStep" data-index="{{index}}">
+                <t-icon name="close" size="40rpx" color="#E53935" />
+              </view>
+            </view>
+          </view>
+          
+          <view class="error-message" wx:if="{{errors.steps[index]}}">
+            {{errors.steps[index]}}
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 小贴士 -->
+    <view class="form-section">
+      <view class="section-title">烹饪小贴士</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="分享一些烹饪技巧、食材选择建议或其他注意事项" 
+        value="{{form.tips}}"
+        maxlength="500"
+        bindinput="onTipsInput"
+      ></textarea>
+      <view class="char-count">{{form.tips.length}}/500</view>
+    </view>
+    
+    <!-- 标签 -->
+    <view class="form-section">
+      <view class="section-title">菜谱标签</view>
+      <view class="tags-container">
+        <view class="selected-tags" wx:if="{{form.tags.length > 0}}">
+          <view 
+            class="tag-item" 
+            wx:for="{{form.tags}}" 
+            wx:key="*this"
+            catchtap="onToggleTag"
+            data-tag="{{item}}"
+          >
+            <text>{{item}}</text>
+            <t-icon name="close" size="28rpx" />
+          </view>
+        </view>
+        
+        <view class="tag-selector" bindtap="onOpenTagSelector">
+          <t-icon name="add" size="36rpx" />
+          <text>添加标签 ({{form.tags.length}}/5)</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 提交按钮 -->
+    <view class="submit-container">
+      <t-button 
+        theme="primary" 
+        size="large" 
+        block 
+        loading="{{isSubmitting}}"
+        bindtap="onSubmit"
+      >
+        保存菜谱
+      </t-button>
+    </view>
+  </view>
+  
+  <!-- 标签选择弹窗 -->
+  <t-popup
+    visible="{{showTagSelector}}"
+    placement="bottom"
+    bind:close="onCloseTagSelector"
+  >
+    <view class="tag-selector-container">
+      <view class="selector-header">
+        <view class="selector-title">选择标签 ({{form.tags.length}}/5)</view>
+        <view class="selector-close" bindtap="onCloseTagSelector">
+          <t-icon name="close" size="40rpx" />
+        </view>
+      </view>
+      
+      <view class="tag-selector-list">
+        <view 
+          class="tag-selector-item {{form.tags.indexOf(item) > -1 ? 'selected' : ''}}" 
+          wx:for="{{commonTags}}" 
+          wx:key="*this"
+          bindtap="onToggleTag"
+          data-tag="{{item}}"
+        >
+          {{item}}
+        </view>
+      </view>
+      
+      <view class="selector-footer">
+        <t-button theme="primary" size="large" block bindtap="onCloseTagSelector">
+          完成
+        </t-button>
+      </view>
+    </view>
+  </t-popup>
+  
+  <!-- 消息提示 -->
+  <t-toast id="t-toast" />
+  
+  <!-- 对话框 -->
+  <t-dialog id="t-dialog" />
+</view> 

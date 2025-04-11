@@ -1,0 +1,124 @@
+<view class="order-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="title">家庭点菜</view>
+  </view>
+  
+  <!-- 日期选择器 -->
+  <view class="date-selector">
+    <view class="date-arrow" bindtap="onPrevDate">
+      <t-icon name="chevron-left" size="48rpx" />
+    </view>
+    <view class="date-display" bindtap="onDateTap">
+      <text class="date-text">{{formatDate}}</text>
+      <t-icon name="calendar" size="40rpx" />
+    </view>
+    <view class="date-arrow" bindtap="onNextDate">
+      <t-icon name="chevron-right" size="48rpx" />
+    </view>
+    <view class="calendar-button" bindtap="navigateToCalendar">
+      <t-icon name="view-module" size="44rpx" />
+    </view>
+  </view>
+  
+  <!-- 三餐导航 -->
+  <view class="meal-tabs">
+    <t-tabs defaultValue="{{activeMeal}}" bind:change="onMealChange" t-class="custom-tabs">
+      <t-tab-panel label="早餐" value="breakfast" />
+      <t-tab-panel label="午餐" value="lunch" />
+      <t-tab-panel label="晚餐" value="dinner" />
+    </t-tabs>
+  </view>
+  
+  <!-- 已选菜品列表 -->
+  <view class="dishes-container">
+    <block wx:if="{{selectedDishes[activeMeal].length > 0}}">
+      <view class="dishes-title">
+        <text>已选菜品</text>
+        <text class="dishes-count">{{selectedDishes[activeMeal].length}}道菜</text>
+      </view>
+      
+      <view class="dishes-list">
+        <view 
+          class="dish-item" 
+          wx:for="{{selectedDishes[activeMeal]}}" 
+          wx:key="id"
+        >
+          <!-- 菜品图片 -->
+          <image class="dish-image" src="{{item.image}}" mode="aspectFill" />
+          
+          <!-- 菜品信息 -->
+          <view class="dish-info">
+            <view class="dish-name">{{item.name}}</view>
+            <view class="dish-time">烹饪时间: {{item.cookTime}}分钟</view>
+          </view>
+          
+          <!-- 操作按钮 -->
+          <view class="dish-actions">
+            <!-- 份数调整 -->
+            <t-stepper 
+              value="{{item.servings}}" 
+              min="1" 
+              max="20" 
+              step="1"
+              theme="filled"
+              size="small"
+              bind:change="onServingsChange"
+              data-id="{{item.id}}"
+            />
+            
+            <!-- 删除按钮 -->
+            <view class="dish-delete" catchtap="onDeleteDish" data-id="{{item.id}}">
+              <t-icon name="delete" size="44rpx" />
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 空状态 -->
+    <view class="empty-state" wx:else>
+      <view class="empty-icon">
+        <t-icon name="shop" size="160rpx" />
+      </view>
+      <view class="empty-text">还没有选择菜品</view>
+      <view class="empty-desc">点击下方按钮从菜谱中选择</view>
+    </view>
+    
+    <!-- 添加菜品按钮 -->
+    <view class="add-dish-button" bindtap="onAddDish">
+      <view class="add-icon"></view>
+      <text>添加菜品</text>
+    </view>
+  </view>
+  
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="ingredients-summary">
+      <text>共需{{totalIngredients}}种食材</text>
+    </view>
+    <t-button 
+      theme="primary" 
+      size="large" 
+      bind:tap="onGenerateShoppingList"
+      disabled="{{isListEmpty}}"
+    >
+      生成购物清单
+    </t-button>
+  </view>
+</view>
+
+<!-- 日期选择器弹窗 -->
+<t-calendar 
+  visible="{{showCalendar}}" 
+  bind:confirm="onCalendarConfirm" 
+  bind:close="onCalendarClose"
+  type="single"
+  minDate="{{minDate}}"
+  maxDate="{{maxDate}}"
+  value="{{selectedDate}}"
+  title="选择日期"
+/>
+
+<!-- 提示消息 -->
+<t-toast id="t-toast" /> 

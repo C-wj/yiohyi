@@ -1,0 +1,6 @@
+<t-tab-bar value="{{ value }}" theme="tag" split="{{ false }}" bind:change="handleChange">
+  <t-tab-bar-item icon="home" value="home">社区</t-tab-bar-item>
+  <t-tab-bar-item icon="app" value="my-recipes">我的菜谱</t-tab-bar-item>
+  <t-tab-bar-item icon="shop" value="order">点菜</t-tab-bar-item>
+  <t-tab-bar-item icon="user" value="my">我的</t-tab-bar-item>
+</t-tab-bar>

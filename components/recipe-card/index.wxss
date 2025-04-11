@@ -1,0 +1,90 @@
+/* 主题色变量 */
+.recipe-card {
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 菜谱图片 */
+.recipe-image {
+  width: 100%;
+  height: 240rpx;
+  overflow: hidden;
+}
+
+.recipe-image image {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.recipe-card:active .recipe-image image {
+  transform: scale(1.05);
+}
+
+/* 菜谱信息 */
+.recipe-info {
+  padding: 16rpx;
+}
+
+.recipe-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+  color: #333333;
+  line-height: 1.4;
+  height: 80rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* 作者信息 */
+.recipe-author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.author-avatar {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  margin-right: 8rpx;
+}
+
+.author-name {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+/* 底部互动栏 */
+.recipe-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 22rpx;
+  color: #999999;
+  margin-top: 16rpx;
+}
+
+.recipe-time, .recipe-difficulty, .recipe-like, .recipe-favorite {
+  display: flex;
+  align-items: center;
+}
+
+.recipe-time text, .recipe-like text {
+  margin-left: 4rpx;
+}
+
+.recipe-like.active, .recipe-favorite.active {
+  color: #FF9500;
+}
+
+/* TDesign 图标颜色覆盖 */
+.recipe-like.active .t-icon, .recipe-favorite.active .t-icon {
+  color: #FF9500 !important;
+} 

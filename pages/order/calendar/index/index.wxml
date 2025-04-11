@@ -1,0 +1,155 @@
+<view class="calendar-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="back-button" bindtap="onBack">
+      <t-icon name="chevron-left" size="48rpx" />
+    </view>
+    <view class="title">菜单日历</view>
+  </view>
+  
+  <!-- 日历头部 -->
+  <view class="calendar-header">
+    <view class="month-nav">
+      <view class="month-arrow" bindtap="onPrevMonth">
+        <t-icon name="chevron-left" size="48rpx" />
+      </view>
+      <view class="month-display">
+        {{year}}年{{month}}月
+      </view>
+      <view class="month-arrow" bindtap="onNextMonth">
+        <t-icon name="chevron-right" size="48rpx" />
+      </view>
+    </view>
+    
+    <!-- 星期表头 -->
+    <view class="week-header">
+      <view class="week-cell">日</view>
+      <view class="week-cell">一</view>
+      <view class="week-cell">二</view>
+      <view class="week-cell">三</view>
+      <view class="week-cell">四</view>
+      <view class="week-cell">五</view>
+      <view class="week-cell">六</view>
+    </view>
+  </view>
+  
+  <!-- 日历网格 -->
+  <view class="calendar-grid">
+    <view 
+      class="calendar-day {{item.isCurrentMonth ? 'current-month' : 'other-month'}} {{item.date === selectedDate ? 'selected-day' : ''}} {{item.isToday ? 'today' : ''}}"
+      wx:for="{{calendarDays}}"
+      wx:key="date"
+      data-date="{{item.date}}"
+      bindtap="onDayTap"
+    >
+      <view class="day-number">{{item.day}}</view>
+      <view class="order-indicator" wx:if="{{item.hasOrder}}"></view>
+    </view>
+  </view>
+  
+  <!-- 日期菜单详情 -->
+  <view class="day-menu">
+    <!-- 日期显示 -->
+    <view class="day-title">
+      {{formatSelectedDate}} 菜单
+    </view>
+    
+    <!-- 菜单内容 -->
+    <view class="menu-content">
+      <!-- 菜单选项卡 -->
+      <t-tabs defaultValue="{{tabValue}}" bind:change="onTabChange" t-class="custom-tabs">
+        <t-tab-panel label="早餐 ({{currentDayMenu.breakfast.length}})" value="0" />
+        <t-tab-panel label="午餐 ({{currentDayMenu.lunch.length}})" value="1" />
+        <t-tab-panel label="晚餐 ({{currentDayMenu.dinner.length}})" value="2" />
+      </t-tabs>
+      
+      <!-- 早餐菜品 -->
+      <view class="menu-list" wx:if="{{tabValue == 0}}">
+        <block wx:if="{{currentDayMenu.breakfast.length > 0}}">
+          <view 
+            class="menu-item" 
+            wx:for="{{currentDayMenu.breakfast}}" 
+            wx:key="id"
+          >
+            <image class="menu-image" src="{{item.image}}" mode="aspectFill" />
+            <view class="menu-info">
+              <view class="menu-name">{{item.name}}</view>
+              <view class="menu-desc">份数: {{item.servings || 1}}</view>
+            </view>
+          </view>
+        </block>
+        <view class="empty-menu" wx:else>
+          <t-icon name="shop" size="120rpx" />
+          <text>暂无早餐菜品</text>
+        </view>
+      </view>
+      
+      <!-- 午餐菜品 -->
+      <view class="menu-list" wx:if="{{tabValue == 1}}">
+        <block wx:if="{{currentDayMenu.lunch.length > 0}}">
+          <view 
+            class="menu-item" 
+            wx:for="{{currentDayMenu.lunch}}" 
+            wx:key="id"
+          >
+            <image class="menu-image" src="{{item.image}}" mode="aspectFill" />
+            <view class="menu-info">
+              <view class="menu-name">{{item.name}}</view>
+              <view class="menu-desc">份数: {{item.servings || 1}}</view>
+            </view>
+          </view>
+        </block>
+        <view class="empty-menu" wx:else>
+          <t-icon name="shop" size="120rpx" />
+          <text>暂无午餐菜品</text>
+        </view>
+      </view>
+      
+      <!-- 晚餐菜品 -->
+      <view class="menu-list" wx:if="{{tabValue == 2}}">
+        <block wx:if="{{currentDayMenu.dinner.length > 0}}">
+          <view 
+            class="menu-item" 
+            wx:for="{{currentDayMenu.dinner}}" 
+            wx:key="id"
+          >
+            <image class="menu-image" src="{{item.image}}" mode="aspectFill" />
+            <view class="menu-info">
+              <view class="menu-name">{{item.name}}</view>
+              <view class="menu-desc">份数: {{item.servings || 1}}</view>
+            </view>
+          </view>
+        </block>
+        <view class="empty-menu" wx:else>
+          <t-icon name="shop" size="120rpx" />
+          <text>暂无晚餐菜品</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <block wx:if="{{hasDayMenu}}">
+      <t-button 
+        theme="primary" 
+        size="large" 
+        bind:tap="onViewOrderDetail"
+      >
+        查看详情
+      </t-button>
+    </block>
+    <block wx:else>
+      <t-button 
+        theme="primary" 
+        size="large" 
+        bind:tap="onCreateMenu"
+      >
+        创建菜单
+      </t-button>
+    </block>
+  </view>
+</view>
+
+<!-- 提示消息 -->
+<t-toast id="t-toast" /> 

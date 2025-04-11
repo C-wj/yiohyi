@@ -1,0 +1,254 @@
+/* 主题变量 */
+page {
+  --primary-color: #FF9500;
+  --primary-color-light: #FFE4BF;
+  --secondary-color: #4CAF50;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-placeholder: #999999;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F6F6F6;
+  --border-color: #EEEEEE;
+}
+
+.order-container {
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+  padding-bottom: 180rpx; /* 为底部操作栏预留空间 */
+}
+
+/* 顶部状态栏 */
+.status-bar {
+  height: 88rpx;
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 32rpx;
+  position: relative;
+}
+
+/* 日期选择器 */
+.date-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.date-arrow {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.date-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding: 16rpx 30rpx;
+  border-radius: 8rpx;
+  background-color: var(--bg-secondary);
+}
+
+.date-text {
+  margin-right: 10rpx;
+}
+
+/* 三餐导航 */
+.meal-tabs {
+  background-color: white;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.custom-tabs {
+  width: 100%;
+}
+
+/* 菜品容器 */
+.dishes-container {
+  padding: 20rpx 30rpx;
+}
+
+.dishes-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: 500;
+  margin-bottom: 20rpx;
+  color: var(--text-primary);
+}
+
+.dishes-count {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  font-weight: normal;
+}
+
+/* 菜品列表 */
+.dishes-list {
+  margin-bottom: 30rpx;
+}
+
+.dish-item {
+  display: flex;
+  padding: 20rpx;
+  background-color: white;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.dish-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+  background-color: var(--bg-secondary);
+}
+
+.dish-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dish-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.dish-time {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.dish-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.dish-delete {
+  color: #FF4D4F;
+  padding: 8rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 0;
+  background-color: white;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-icon {
+  color: #CCCCCC;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.empty-desc {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-bottom: 30rpx;
+}
+
+/* 添加菜品按钮 */
+.add-dish-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 12rpx;
+  padding: 24rpx 0;
+  font-size: 30rpx;
+  color: var(--primary-color);
+  font-weight: 500;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.add-icon {
+  width: 32rpx;
+  height: 32rpx;
+  position: relative;
+  margin-right: 10rpx;
+}
+
+.add-icon:before,
+.add-icon:after {
+  content: '';
+  position: absolute;
+  background-color: var(--primary-color);
+}
+
+.add-icon:before {
+  width: 32rpx;
+  height: 2rpx;
+  top: 15rpx;
+  left: 0;
+}
+
+.add-icon:after {
+  width: 2rpx;
+  height: 32rpx;
+  left: 15rpx;
+  top: 0;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 20rpx 30rpx calc(20rpx + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+.ingredients-summary {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+/* 添加以下样式 */
+.calendar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  margin-left: 20rpx;
+} 

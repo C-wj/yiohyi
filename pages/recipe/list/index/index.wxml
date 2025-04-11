@@ -1,0 +1,57 @@
+<view class="recipe-list-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="title">选择菜谱</view>
+  </view>
+  
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <t-search
+      placeholder="搜索菜谱名称"
+      shape="round"
+      bind:submit="onSearchSubmit"
+      bind:clear="onSearchClear"
+      value="{{searchValue}}"
+    />
+  </view>
+  
+  <!-- 分类标签 -->
+  <view class="tabs-container">
+    <t-tabs defaultValue="{{activeTab}}" bind:change="onTabChange" t-class="custom-tabs">
+      <t-tab-panel label="我的菜谱" value="my" />
+      <t-tab-panel label="收藏菜谱" value="favorite" />
+    </t-tabs>
+  </view>
+  
+  <!-- 加载中状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <t-loading theme="circular" size="80rpx" />
+    <view class="loading-text">加载中...</view>
+  </view>
+  
+  <!-- 菜谱列表 -->
+  <view class="recipes-list" wx:elif="{{recipes.length > 0}}">
+    <view 
+      class="recipe-item" 
+      wx:for="{{recipes}}" 
+      wx:key="id" 
+      bindtap="onRecipeTap" 
+      data-id="{{item.id}}"
+    >
+      <recipe-card 
+        recipe="{{item}}" 
+        showActions="{{false}}"
+      />
+    </view>
+  </view>
+  
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <t-empty 
+      icon="file" 
+      description="{{searchValue ? '没有找到相关菜谱' : '暂无菜谱'}}" 
+    />
+  </view>
+</view>
+
+<t-toast id="t-toast" /> 

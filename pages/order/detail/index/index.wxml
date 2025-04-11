@@ -1,0 +1,190 @@
+<view class="order-detail-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="back-button" bindtap="onBack">
+      <t-icon name="chevron-left" size="48rpx" />
+    </view>
+    <view class="title">订单详情</view>
+    <view class="menu-button">
+      <t-dropdown-menu>
+        <t-dropdown-item
+          options="{{menuOptions}}"
+          bind:change="onMenuSelect"
+        />
+      </t-dropdown-menu>
+    </view>
+  </view>
+  
+  <!-- 订单信息卡片 -->
+  <view class="order-card">
+    <view class="order-date">{{formatDate}}</view>
+    <view class="order-stats">
+      <view class="stat-item">
+        <view class="stat-value">{{totalIngredients}}</view>
+        <view class="stat-label">食材种类</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value">{{totalCookTime}}</view>
+        <view class="stat-label">烹饪时间(分钟)</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value">{{orderData.breakfast.length + orderData.lunch.length + orderData.dinner.length}}</view>
+        <view class="stat-label">菜品总数</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 菜品选项卡 -->
+  <view class="dishes-tabs">
+    <t-tabs defaultValue="{{tabValue}}" bind:change="onTabChange" t-class="custom-tabs">
+      <t-tab-panel label="早餐 ({{orderData.breakfast.length}})" value="0" />
+      <t-tab-panel label="午餐 ({{orderData.lunch.length}})" value="1" />
+      <t-tab-panel label="晚餐 ({{orderData.dinner.length}})" value="2" />
+    </t-tabs>
+  </view>
+  
+  <!-- 菜品列表 -->
+  <view class="dishes-container">
+    <!-- 早餐菜品 -->
+    <view class="dishes-list" wx:if="{{tabValue == 0}}">
+      <block wx:if="{{orderData.breakfast.length > 0}}">
+        <view 
+          class="dish-item" 
+          wx:for="{{orderData.breakfast}}" 
+          wx:key="id"
+        >
+          <!-- 菜品图片 -->
+          <image class="dish-image" src="{{item.image}}" mode="aspectFill" />
+          
+          <!-- 菜品信息 -->
+          <view class="dish-info">
+            <view class="dish-name">{{item.name}}</view>
+            <view class="dish-time">烹饪时间: {{item.cookTime}}分钟</view>
+            <view class="dish-servings">份数: {{item.servings || 1}}</view>
+          </view>
+          
+          <!-- 菜品食材 -->
+          <view class="dish-ingredients">
+            <view class="ingredients-title">所需食材:</view>
+            <view 
+              class="ingredient-item" 
+              wx:for="{{item.ingredients}}" 
+              wx:for-item="ingredient" 
+              wx:key="name"
+            >
+              {{ingredient.name}}: {{ingredient.amount * (item.servings || 1)}}{{ingredient.unit}}
+            </view>
+          </view>
+        </view>
+      </block>
+      <view class="empty-list" wx:else>
+        <t-icon name="shop" size="120rpx" />
+        <text>暂无早餐菜品</text>
+      </view>
+    </view>
+    
+    <!-- 午餐菜品 -->
+    <view class="dishes-list" wx:if="{{tabValue == 1}}">
+      <block wx:if="{{orderData.lunch.length > 0}}">
+        <view 
+          class="dish-item" 
+          wx:for="{{orderData.lunch}}" 
+          wx:key="id"
+        >
+          <!-- 菜品图片 -->
+          <image class="dish-image" src="{{item.image}}" mode="aspectFill" />
+          
+          <!-- 菜品信息 -->
+          <view class="dish-info">
+            <view class="dish-name">{{item.name}}</view>
+            <view class="dish-time">烹饪时间: {{item.cookTime}}分钟</view>
+            <view class="dish-servings">份数: {{item.servings || 1}}</view>
+          </view>
+          
+          <!-- 菜品食材 -->
+          <view class="dish-ingredients">
+            <view class="ingredients-title">所需食材:</view>
+            <view 
+              class="ingredient-item" 
+              wx:for="{{item.ingredients}}" 
+              wx:for-item="ingredient" 
+              wx:key="name"
+            >
+              {{ingredient.name}}: {{ingredient.amount * (item.servings || 1)}}{{ingredient.unit}}
+            </view>
+          </view>
+        </view>
+      </block>
+      <view class="empty-list" wx:else>
+        <t-icon name="shop" size="120rpx" />
+        <text>暂无午餐菜品</text>
+      </view>
+    </view>
+    
+    <!-- 晚餐菜品 -->
+    <view class="dishes-list" wx:if="{{tabValue == 2}}">
+      <block wx:if="{{orderData.dinner.length > 0}}">
+        <view 
+          class="dish-item" 
+          wx:for="{{orderData.dinner}}" 
+          wx:key="id"
+        >
+          <!-- 菜品图片 -->
+          <image class="dish-image" src="{{item.image}}" mode="aspectFill" />
+          
+          <!-- 菜品信息 -->
+          <view class="dish-info">
+            <view class="dish-name">{{item.name}}</view>
+            <view class="dish-time">烹饪时间: {{item.cookTime}}分钟</view>
+            <view class="dish-servings">份数: {{item.servings || 1}}</view>
+          </view>
+          
+          <!-- 菜品食材 -->
+          <view class="dish-ingredients">
+            <view class="ingredients-title">所需食材:</view>
+            <view 
+              class="ingredient-item" 
+              wx:for="{{item.ingredients}}" 
+              wx:for-item="ingredient" 
+              wx:key="name"
+            >
+              {{ingredient.name}}: {{ingredient.amount * (item.servings || 1)}}{{ingredient.unit}}
+            </view>
+          </view>
+        </view>
+      </block>
+      <view class="empty-list" wx:else>
+        <t-icon name="shop" size="120rpx" />
+        <text>暂无晚餐菜品</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <t-button 
+      theme="primary" 
+      size="large" 
+      bind:tap="onGenerateShoppingList"
+      disabled="{{orderData.breakfast.length + orderData.lunch.length + orderData.dinner.length === 0}}"
+    >
+      生成购物清单
+    </t-button>
+  </view>
+</view>
+
+<!-- 删除确认对话框 -->
+<t-dialog
+  visible="{{showDeleteConfirm}}"
+  title="确认删除"
+  content="确定要删除这个订单吗？此操作不可恢复。"
+  confirm-btn="删除"
+  cancel-btn="取消"
+  bind:confirm="onConfirmDelete"
+  bind:cancel="onCancelDelete"
+/>
+
+<!-- 提示消息 -->
+<t-toast id="t-toast" /> 

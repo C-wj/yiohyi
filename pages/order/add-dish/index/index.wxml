@@ -1,0 +1,137 @@
+<view class="add-dish-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="title">添加菜品</view>
+  </view>
+  
+  <!-- 菜品表单 -->
+  <view class="dish-form">
+    <!-- 菜品类型选择 -->
+    <view class="form-section">
+      <view class="section-title">菜品类型</view>
+      <t-radio-group value="{{dish.type}}" bind:change="onTypeChange">
+        <view class="type-options">
+          <t-radio value="recipe" label="从菜谱选择" />
+          <t-radio value="custom" label="自定义菜品" />
+        </view>
+      </t-radio-group>
+    </view>
+    
+    <!-- 从菜谱选择 -->
+    <view class="form-section" wx:if="{{dish.type === 'recipe'}}">
+      <view class="section-title">选择菜谱</view>
+      <view class="recipe-selector" bindtap="selectRecipe">
+        <view wx:if="{{selectedRecipe}}">
+          <view class="selected-recipe">
+            <image 
+              src="{{selectedRecipe.image}}" 
+              mode="aspectFill" 
+              class="recipe-image"
+            />
+            <view class="recipe-info">
+              <view class="recipe-title">{{selectedRecipe.title}}</view>
+              <view class="recipe-author">{{selectedRecipe.author.name}}</view>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="empty-recipe">
+          <t-icon name="add-circle" size="48rpx" />
+          <text>点击选择菜谱</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 自定义菜品 -->
+    <block wx:if="{{dish.type === 'custom'}}">
+      <!-- 菜品名称 -->
+      <view class="form-section">
+        <view class="section-title">菜品名称 <text class="required">*</text></view>
+        <t-input
+          value="{{dish.name}}"
+          placeholder="请输入菜品名称"
+          bind:change="onNameChange"
+        />
+      </view>
+      
+      <!-- 菜品图片 -->
+      <view class="form-section">
+        <view class="section-title">菜品图片</view>
+        <t-upload
+          mediaType="{{['image']}}"
+          max="{{1}}"
+          files="{{fileList}}"
+          bind:success="onUploadSuccess"
+          bind:remove="onUploadRemove"
+        />
+      </view>
+      
+      <!-- 菜品描述 -->
+      <view class="form-section">
+        <view class="section-title">菜品描述</view>
+        <t-textarea
+          value="{{dish.description}}"
+          placeholder="请输入菜品描述"
+          maxlength="200"
+          disableDefaultPadding="{{true}}"
+          indicator
+          bind:change="onDescriptionChange"
+        />
+      </view>
+    </block>
+    
+    <!-- 公共设置 -->
+    <view class="form-section">
+      <view class="section-title">价格设置</view>
+      <t-input
+        value="{{dish.price}}"
+        placeholder="请输入菜品价格"
+        type="number"
+        suffix="元"
+        bind:change="onPriceChange"
+      />
+    </view>
+    
+    <view class="form-section">
+      <view class="section-title">数量</view>
+      <t-stepper
+        value="{{dish.quantity}}"
+        min="1"
+        theme="filled"
+        bind:change="onQuantityChange"
+      />
+    </view>
+    
+    <view class="form-section">
+      <view class="section-title">分类</view>
+      <t-radio-group value="{{dish.category}}" bind:change="onCategoryChange">
+        <view class="category-options">
+          <t-radio value="main" label="主菜" />
+          <t-radio value="side" label="配菜" />
+          <t-radio value="soup" label="汤品" />
+          <t-radio value="dessert" label="甜点" />
+          <t-radio value="other" label="其他" />
+        </view>
+      </t-radio-group>
+    </view>
+    
+    <view class="form-section">
+      <view class="section-title">备注</view>
+      <t-textarea
+        value="{{dish.notes}}"
+        placeholder="请输入特殊要求或备注"
+        maxlength="100"
+        disableDefaultPadding="{{true}}"
+        indicator
+        bind:change="onNotesChange"
+      />
+    </view>
+  </view>
+  
+  <!-- 底部按钮 -->
+  <view class="bottom-buttons">
+    <t-button theme="light" size="large" bindtap="onCancel">取消</t-button>
+    <t-button theme="primary" size="large" bindtap="onSubmit">添加菜品</t-button>
+  </view>
+</view>
+
+<t-toast id="t-toast" /> 

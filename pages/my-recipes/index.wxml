@@ -1,0 +1,84 @@
+<view class="my-recipes-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="title">我的菜谱</view>
+  </view>
+  
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <t-search
+      placeholder="搜索我的菜谱"
+      shape="round"
+      bind:submit="onSearchSubmit"
+      bind:focus="onSearchFocus"
+    />
+  </view>
+  
+  <!-- 分类标签 -->
+  <view class="tabs-container">
+    <t-tabs defaultValue="{{activeTab}}" bind:change="onTabChange" t-class="custom-tabs">
+      <t-tab-panel label="全部" value="all" />
+      <t-tab-panel label="我创建的" value="created" />
+      <t-tab-panel label="我收藏的" value="favorite" />
+    </t-tabs>
+  </view>
+  
+  <!-- 操作按钮区 -->
+  <view class="action-bar">
+    <view class="filter-btns">
+      <view class="filter-btn" bindtap="onSortTap">
+        <t-icon name="filter" size="32rpx" />
+        <text>筛选</text>
+      </view>
+    </view>
+    <view class="add-recipe-btn" bindtap="onCreateRecipe">
+      <view class="add-icon"></view>
+      <text>新建菜谱</text>
+    </view>
+  </view>
+  
+  <!-- 菜谱列表 -->
+  <view class="recipes-list" wx:if="{{recipes.length > 0}}">
+    <view 
+      class="recipe-item" 
+      wx:for="{{recipes}}" 
+      wx:key="id" 
+      bindtap="onRecipeTap" 
+      data-id="{{item.id}}"
+      bindlongpress="onRecipeLongPress"
+      data-index="{{index}}"
+    >
+      <recipe-card 
+        recipe="{{item}}" 
+        bind:like="onLikeRecipe"
+        bind:favorite="onFavoriteRecipe"
+      />
+    </view>
+  </view>
+  
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <view class="empty-icon">
+      <t-icon name="file-exception" size="160rpx" />
+    </view>
+    <view class="empty-text">暂无菜谱</view>
+    <t-button theme="primary" size="medium" bindtap="onCreateRecipe">立即创建</t-button>
+  </view>
+  
+  <!-- 加载更多 -->
+  <view class="loading-more" wx:if="{{hasMore && recipes.length > 0}}">
+    <t-loading theme="circular" size="40rpx" />
+    <text>加载更多...</text>
+  </view>
+  
+  <!-- 加载完毕 -->
+  <view class="loading-end" wx:if="{{!hasMore && recipes.length > 0}}">
+    <text>- 没有更多菜谱了 -</text>
+  </view>
+</view>
+
+<!-- 操作菜单弹窗 -->
+<t-action-sheet id="t-action-sheet" />
+
+<!-- 提示消息 -->
+<t-toast id="t-toast" /> 

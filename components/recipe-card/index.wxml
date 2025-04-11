@@ -1,0 +1,48 @@
+<view class="recipe-card">
+  <!-- 菜谱图片 -->
+  <view class="recipe-image">
+    <image 
+      src="{{recipe.image}}" 
+      mode="aspectFill" 
+      bindload="onImageLoad" 
+      binderror="onImageError" 
+    />
+  </view>
+  
+  <!-- 菜谱信息 -->
+  <view class="recipe-info">
+    <!-- 标题 -->
+    <view class="recipe-title">{{recipe.title}}</view>
+    
+    <!-- 作者信息 -->
+    <view class="recipe-author">
+      <image class="author-avatar" src="{{recipe.author.avatar}}" mode="aspectFill" />
+      <text class="author-name">{{recipe.author.name}}</text>
+    </view>
+    
+    <!-- 底部互动栏 -->
+    <view class="recipe-actions">
+      <!-- 烹饪时间 -->
+      <view class="recipe-time">
+        <t-icon name="time" size="32rpx" />
+        <text>{{recipe.cookTime}}分钟</text>
+      </view>
+      
+      <!-- 难度 -->
+      <view class="recipe-difficulty">
+        <text>{{recipe.difficulty}}</text>
+      </view>
+      
+      <!-- 点赞 -->
+      <view class="recipe-like {{recipe.isLiked ? 'active' : ''}}" catchtap="onLikeTap">
+        <t-icon name="{{recipe.isLiked ? 'heart-filled' : 'heart'}}" size="32rpx" />
+        <text>{{recipe.likes}}</text>
+      </view>
+      
+      <!-- 收藏 -->
+      <view class="recipe-favorite {{recipe.isFavorite ? 'active' : ''}}" catchtap="onFavoriteTap">
+        <t-icon name="{{recipe.isFavorite ? 'star-filled' : 'star'}}" size="32rpx" />
+      </view>
+    </view>
+  </view>
+</view> 

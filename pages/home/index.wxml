@@ -1,0 +1,120 @@
+<nav nav-type="search" />
+<view class="home-container">
+  <!-- 分类标签 -->
+  <view class="category-tabs">
+    <t-tabs defaultValue="{{0}}" bind:change="onTabsChange" t-class="custom-tabs">
+      <t-tab-panel label="推荐" value="0" />
+      <t-tab-panel label="家常菜" value="1" />
+      <t-tab-panel label="川菜" value="2" />
+      <t-tab-panel label="粤菜" value="3" />
+      <t-tab-panel label="早餐" value="4" />
+      <t-tab-panel label="午餐" value="5" />
+    </t-tabs>
+  </view>
+  
+  <!-- 内容滚动区域 -->
+  <scroll-view 
+    scroll-y 
+    class="home-content" 
+    refresher-enabled="{{true}}" 
+    refresher-triggered="{{refreshing}}" 
+    bind:refresherpulling="onPulling" 
+    bind:refresherrefresh="onRefresh"
+    bindscrolltolower="loadMore"
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+  >
+    <!-- 推荐轮播图 -->
+    <view class="swiper-container">
+      <t-swiper
+        current="{{swiperCurrent}}"
+        autoplay="{{true}}"
+        duration="{{500}}"
+        interval="{{5000}}"
+        navigation="{{ { type: 'dots' } }}"
+        list="{{swiperList}}"
+        bind:change="onSwiperChange"
+        image-props="{{ { shape: 'round' } }}"
+      />
+    </view>
+    
+    <!-- 今日推荐部分 -->
+    <view class="recommendation-section" wx:if="{{hasRecommendation}}">
+      <view class="section-title">
+        <text>今日推荐</text>
+        <text class="subtitle">根据您的历史记录智能推荐</text>
+      </view>
+      
+      <t-loading theme="circular" size="40rpx" class="centered" wx:if="{{recommendationLoading}}" />
+      
+      <scroll-view scroll-x enable-flex class="recommendation-scroll" wx:else>
+        <view class="recommendation-list">
+          <view 
+            class="recommendation-item" 
+            wx:for="{{recommended}}" 
+            wx:key="id"
+            bindtap="onTapRecommendation"
+            data-id="{{item.id}}"
+          >
+            <image src="{{item.image || '/static/home/default-food.png'}}" mode="aspectFill" class="recommendation-image" />
+            <view class="recommendation-info">
+              <view class="recommendation-title">{{item.name}}</view>
+              <view class="recommendation-meta">
+                <text class="recommendation-cook-time">{{item.cookTime}}分钟</text>
+                <text class="dot-separator">·</text>
+                <text class="recommendation-difficulty">{{item.difficulty || '普通'}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    
+    <!-- 热门菜谱部分 -->
+    <view class="hot-recipes">
+      <view class="section-header recipe-header">
+        <view class="section-title large-title">
+          <text>热门菜谱</text>
+        </view>
+      </view>
+      
+      <!-- 菜谱列表 -->
+      <view class="recipe-list">
+        <view 
+          class="recipe-item" 
+          wx:for="{{recipeList}}" 
+          wx:key="id" 
+          bindtap="onRecipeTap" 
+          data-id="{{item.id}}"
+        >
+          <recipe-card 
+            recipe="{{item}}" 
+            bind:like="onLikeRecipe"
+            bind:favorite="onFavoriteRecipe"
+          />
+        </view>
+      </view>
+      
+      
+      <!-- 加载更多提示 -->
+      <view class="loading-more" wx:if="{{hasMore}}">
+        <t-loading theme="circular" size="40rpx" />
+        <text>加载更多...</text>
+      </view>
+      
+      <!-- 加载完毕提示 -->
+      <view class="loading-end" wx:else>
+        <text>- 没有更多菜谱了 -</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 发布按钮 -->
+<view class="home-release">
+  <t-fab icon="add" bind:click="goRelease" text="发布" />
+</view>
+
+<t-message id="t-message" />
+<t-toast id="t-toast" />
+

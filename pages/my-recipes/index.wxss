@@ -1,0 +1,158 @@
+/* 主题变量 */
+page {
+  --primary-color: #FF9500;
+  --primary-color-light: #FFE4BF;
+  --secondary-color: #4CAF50;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-placeholder: #999999;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F6F6F6;
+  --border-color: #EEEEEE;
+}
+
+.my-recipes-container {
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部状态栏 */
+.status-bar {
+  height: 88rpx;
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 32rpx;
+  position: relative;
+}
+
+/* 搜索栏 */
+.search-bar {
+  padding: 20rpx 30rpx;
+  background-color: white;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+/* 分类标签栏 */
+.tabs-container {
+  background-color: white;
+}
+
+.custom-tabs {
+  background-color: white;
+}
+
+/* 操作按钮区 */
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: white;
+  margin-bottom: 20rpx;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.filter-btns {
+  display: flex;
+}
+
+.filter-btn {
+  padding: 10rpx 20rpx;
+  background-color: var(--bg-secondary);
+  border-radius: 30rpx;
+  margin-right: 16rpx;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+}
+
+.filter-btn text {
+  margin-left: 6rpx;
+}
+
+.add-recipe-btn {
+  padding: 10rpx 24rpx;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+}
+
+.add-icon {
+  width: 24rpx;
+  height: 24rpx;
+  position: relative;
+  margin-right: 8rpx;
+}
+
+.add-icon:before,
+.add-icon:after {
+  content: '';
+  position: absolute;
+  background-color: white;
+}
+
+.add-icon:before {
+  width: 24rpx;
+  height: 2rpx;
+  top: 11rpx;
+  left: 0;
+}
+
+.add-icon:after {
+  width: 2rpx;
+  height: 24rpx;
+  left: 11rpx;
+  top: 0;
+}
+
+/* 菜谱列表 */
+.recipes-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 100rpx 0;
+  text-align: center;
+  background-color: white;
+  margin: 20rpx 30rpx;
+  border-radius: 12rpx;
+}
+
+.empty-icon {
+  color: #CCCCCC;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  color: var(--text-secondary);
+  font-size: 28rpx;
+  margin-bottom: 40rpx;
+}
+
+/* 加载更多和加载完毕 */
+.loading-more, .loading-end {
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  padding: 30rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-more text {
+  margin-left: 8rpx;
+} 

@@ -1,0 +1,261 @@
+<view class="shopping-list-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="title">购物清单</view>
+    <view class="history-button" bindtap="goToHistory">
+      <t-icon name="history" size="44rpx" />
+    </view>
+  </view>
+  
+  <!-- 添加物品区域 -->
+  <view class="add-item-section">
+    <view class="add-item-form">
+      <t-input
+        class="item-input"
+        placeholder="添加购物物品"
+        value="{{newItem.name}}"
+        data-field="name"
+        bind:change="onInputChange"
+        suffixIcon="{{ {name: 'close-circle-filled', ariaLabel: '清除'} }}"
+        bind:click-suffix-icon="clearInput"
+      />
+      
+      <view class="item-details">
+        <view class="quantity-section">
+          <t-input
+            class="quantity-input"
+            placeholder="数量"
+            type="number"
+            value="{{newItem.quantity}}"
+            data-field="quantity"
+            bind:change="onInputChange"
+          />
+          
+          <t-input
+            class="unit-input"
+            placeholder="单位"
+            value="{{newItem.unit}}"
+            data-field="unit"
+            bind:change="onInputChange"
+          />
+        </view>
+        
+        <t-button 
+          theme="primary" 
+          size="small" 
+          shape="round" 
+          icon="add"
+          bind:tap="addItem"
+          disabled="{{!newItem.name}}"
+        >
+          添加
+        </t-button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 购物列表区域 -->
+  <view class="shopping-list-content" wx:if="{{shoppingList.length > 0}}">
+    <!-- 批量操作区域 -->
+    <view class="batch-operation">
+      <t-checkbox
+        value="{{selectAll}}"
+        label="全选"
+        bind:change="onSelectAllChange"
+      />
+      
+      <view class="operation-buttons">
+        <t-button
+          theme="danger"
+          size="small"
+          icon="delete"
+          variant="outline"
+          disabled="{{!hasItemSelected}}"
+          bind:tap="deleteSelectedItems"
+        >
+          删除
+        </t-button>
+        
+        <t-button
+          theme="primary"
+          size="small"
+          variant="outline"
+          disabled="{{!hasItemSelected}}"
+          bind:tap="markSelectedAsComplete"
+        >
+          标记完成
+        </t-button>
+      </view>
+    </view>
+    
+    <!-- 待购买物品列表 -->
+    <view class="list-section">
+      <view class="section-title">
+        <text>待购买</text>
+        <text class="item-count">({{pendingList.length}})</text>
+      </view>
+      
+      <t-checkbox-group value="{{selectedItems}}" bind:change="onSelectionChange">
+        <block wx:for="{{pendingList}}" wx:key="id">
+          <t-swipe-cell
+            right="{{swipeActions}}"
+            bind:click="onSwipeCellClick"
+            data-id="{{item.id}}"
+          >
+            <view class="shop-item">
+              <view class="left">
+                <t-checkbox
+                  value="{{item.completed}}"
+                  icon="circle"
+                  bind:change="onItemCheckChange"
+                  data-id="{{item.id}}"
+                />
+              </view>
+              <view class="content" bindtap="onItemTap" data-id="{{item.id}}">
+                <view class="name-wrapper">
+                  <text class="name">{{item.name}}</text>
+                  <text class="recipe-badge" wx:if="{{item.fromRecipe}}">食谱</text>
+                </view>
+                <view class="amount">
+                  <text class="quantity">{{item.quantity}}</text>
+                  <text class="unit">{{item.unit}}</text>
+                </view>
+              </view>
+              <view class="right">
+                <t-icon 
+                  name="edit-1" 
+                  size="40rpx" 
+                  color="#888" 
+                  bind:tap="onEditItem" 
+                  data-id="{{item.id}}"
+                />
+              </view>
+            </view>
+          </t-swipe-cell>
+        </block>
+      </t-checkbox-group>
+    </view>
+    
+    <!-- 已购买物品列表 -->
+    <view class="list-section completed-section" wx:if="{{completedList.length > 0}}">
+      <view class="section-title">
+        <text>已购买</text>
+        <text class="item-count">({{completedList.length}})</text>
+      </view>
+      
+      <view class="completed-list">
+        <block wx:for="{{completedList}}" wx:key="id">
+          <view class="list-item completed">
+            <view class="item-content" bind:tap="toggleItemComplete" data-id="{{item.id}}">
+              <view class="item-name">{{item.name}}</view>
+              <view class="item-details">
+                <text class="item-quantity">{{item.quantity}} {{item.unit}}</text>
+                <text class="item-category" wx:if="{{item.category}}">{{item.category}}</text>
+              </view>
+            </view>
+            
+            <view class="item-actions">
+              <t-icon 
+                name="close-circle" 
+                size="44rpx" 
+                bind:tap="deleteItem" 
+                data-id="{{item.id}}"
+              />
+            </view>
+          </view>
+        </block>
+      </view>
+      
+      <view class="clear-completed">
+        <t-button
+          theme="danger"
+          size="small"
+          icon="delete"
+          variant="outline"
+          bind:tap="clearCompletedItems"
+        >
+          清空已购买
+        </t-button>
+        
+        <t-button
+          theme="primary"
+          size="small"
+          icon="check"
+          variant="outline"
+          bind:tap="saveShoppingHistory"
+        >
+          保存历史
+        </t-button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <t-empty 
+      icon="cart" 
+      description="购物清单为空" 
+    >
+      <t-button slot="action" theme="primary" size="small" bind:tap="focusInput">
+        添加物品
+      </t-button>
+    </t-empty>
+  </view>
+  
+  <!-- 导入菜谱按钮 -->
+  <view class="import-recipe">
+    <t-button 
+      theme="primary" 
+      size="large" 
+      icon="file-add" 
+      shape="round" 
+      bind:tap="importFromRecipe"
+    >
+      从菜谱导入
+    </t-button>
+  </view>
+</view>
+
+<!-- 编辑物品弹窗 -->
+<t-dialog
+  visible="{{showEditDialog}}"
+  title="编辑物品"
+  confirm-btn="保存"
+  cancel-btn="取消"
+  bind:confirm="saveEditItem"
+  bind:cancel="closeEditDialog"
+>
+  <view class="edit-dialog-content">
+    <t-input
+      placeholder="物品名称"
+      value="{{editItem.name}}"
+      data-field="name"
+      bind:change="onEditItemChange"
+    />
+    <view class="edit-item-details">
+      <t-input
+        class="quantity-input"
+        placeholder="数量"
+        type="number"
+        value="{{editItem.quantity}}"
+        data-field="quantity"
+        bind:change="onEditItemChange"
+      />
+      <t-input
+        class="unit-input"
+        placeholder="单位"
+        value="{{editItem.unit}}"
+        data-field="unit"
+        bind:change="onEditItemChange"
+      />
+    </view>
+    <t-input
+      placeholder="分类（可选）"
+      value="{{editItem.category}}"
+      data-field="category"
+      bind:change="onEditItemChange"
+    />
+  </view>
+</t-dialog>
+
+<t-toast id="t-toast" /> 

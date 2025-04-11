@@ -1,0 +1,112 @@
+<view class="shopping-history-container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="title">购物历史</view>
+  </view>
+  
+  <!-- 加载中状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <t-loading theme="circular" size="80rpx" />
+    <view class="loading-text">加载中...</view>
+  </view>
+  
+  <!-- 历史记录列表 -->
+  <block wx:elif="{{historyList.length > 0}}">
+    <view class="history-list">
+      <block wx:for="{{historyList}}" wx:key="id">
+        <t-swipe-cell right="{{swipeActions}}">
+          <view class="history-item" bindtap="onHistoryItemTap" data-id="{{item.id}}">
+            <view class="history-header">
+              <view class="history-date">{{item.date}}</view>
+              <view class="history-count">{{item.items.length}}件商品</view>
+            </view>
+            
+            <view class="history-preview">
+              <view 
+                class="preview-item" 
+                wx:for="{{item.previewItems}}" 
+                wx:for-item="previewItem" 
+                wx:key="index"
+              >
+                {{previewItem}}
+              </view>
+              <view class="preview-more" wx:if="{{item.items.length > item.previewItems.length}}">
+                等{{item.items.length}}件商品
+              </view>
+            </view>
+            
+            <view class="history-footer">
+              <view class="history-action" catchtap="restoreHistory" data-id="{{item.id}}">
+                <t-icon name="reload" size="40rpx" />
+                <text>恢复</text>
+              </view>
+              <view class="history-action" catchtap="shareHistory" data-id="{{item.id}}">
+                <t-icon name="share" size="40rpx" />
+                <text>分享</text>
+              </view>
+            </view>
+          </view>
+        </t-swipe-cell>
+      </block>
+    </view>
+    
+    <!-- 清空历史按钮 -->
+    <view class="clear-history">
+      <t-button 
+        theme="danger" 
+        variant="outline" 
+        size="medium" 
+        icon="delete" 
+        bind:tap="showClearConfirm"
+      >
+        清空历史记录
+      </t-button>
+    </view>
+  </block>
+  
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <t-empty 
+      icon="info-circle-filled" 
+      description="暂无购物历史记录" 
+    />
+  </view>
+</view>
+
+<!-- 历史详情弹窗 -->
+<t-dialog
+  visible="{{showDetailDialog}}"
+  title="购物历史详情"
+  confirm-btn="{{null}}"
+  cancel-btn="关闭"
+  bind:cancel="closeDetailDialog"
+>
+  <scroll-view scroll-y class="detail-content">
+    <view class="detail-header">
+      <text>{{currentHistory.date}}</text>
+      <text>共{{currentHistory.items.length}}件商品</text>
+    </view>
+    <view class="detail-items">
+      <view class="detail-item" wx:for="{{currentHistory.items}}" wx:key="index">
+        <view class="item-name">{{item.name}}</view>
+        <view class="item-quantity">{{item.quantity}} {{item.unit}}</view>
+      </view>
+    </view>
+    <view class="detail-actions">
+      <t-button theme="primary" size="small" icon="reload" bindtap="restoreFromDetail">恢复至购物清单</t-button>
+    </view>
+  </scroll-view>
+</t-dialog>
+
+<!-- 清空确认弹窗 -->
+<t-dialog
+  visible="{{showClearConfirm}}"
+  title="确认清空"
+  content="确定要清空所有购物历史记录吗？此操作不可恢复。"
+  confirm-btn="确定清空"
+  cancel-btn="取消"
+  bind:confirm="clearAllHistory"
+  bind:cancel="closeClearConfirm"
+/>
+
+<t-toast id="t-toast" /> 

@@ -1,0 +1,18 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "nav": "/components/nav/index",
+    "recipe-card": "/components/recipe-card/index",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-tabs": "tdesign-miniprogram/tabs/tabs",
+    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
+    "t-message": "tdesign-miniprogram/message/message",
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-search": "tdesign-miniprogram/search/search",
+    "t-swiper": "tdesign-miniprogram/swiper/swiper",
+    "t-fab": "tdesign-miniprogram/fab/fab",
+    "t-icon": "tdesign-miniprogram/icon/icon"
+  }
+}

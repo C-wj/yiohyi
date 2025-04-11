@@ -1,0 +1,460 @@
+/* 主题变量 */
+page {
+  --primary-color: #FF9500;
+  --primary-color-light: #FFE4BF;
+  --secondary-color: #4CAF50;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-placeholder: #999999;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F6F6F6;
+  --border-color: #EEEEEE;
+  --error-color: #E53935;
+}
+
+.create-recipe-container {
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+  padding-bottom: 100rpx;
+}
+
+/* 顶部导航 */
+.page-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 88rpx;
+  background-color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+  z-index: 100;
+  box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.05);
+}
+
+.back-button {
+  padding: 10rpx;
+  margin-right: 20rpx;
+}
+
+.page-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 表单容器 */
+.form-container {
+  padding: 20rpx 30rpx;
+}
+
+/* 表单块 */
+.form-section {
+  background-color: var(--bg-primary);
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+  color: var(--text-primary);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-action {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: var(--primary-color);
+}
+
+.section-action text {
+  margin-left: 6rpx;
+}
+
+/* 表单项 */
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-bottom: 12rpx;
+}
+
+.form-label.required::after {
+  content: '*';
+  color: var(--error-color);
+  margin-left: 4rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  width: 100%;
+  height: 180rpx;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-top: 8rpx;
+}
+
+.error-message {
+  font-size: 24rpx;
+  color: var(--error-color);
+  margin-top: 8rpx;
+}
+
+.has-error {
+  border: 1px solid var(--error-color) !important;
+}
+
+/* 封面上传 */
+.cover-uploader {
+  width: 100%;
+  height: 300rpx;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uploader-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-placeholder);
+}
+
+.uploader-placeholder text {
+  font-size: 26rpx;
+  margin-top: 10rpx;
+}
+
+/* 网格布局 */
+.form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10rpx;
+}
+
+.grid-item {
+  width: 50%;
+  padding: 0 10rpx;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+}
+
+/* 步进器 */
+.stepper-container {
+  display: flex;
+  align-items: center;
+}
+
+.unit-text {
+  margin-left: 10rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+/* 食材列表 */
+.ingredients-list {
+  margin-bottom: 20rpx;
+}
+
+.ingredient-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  padding: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.ingredient-col {
+  padding: 0 10rpx;
+}
+
+.name-col {
+  flex: 2;
+}
+
+.amount-col {
+  flex: 1;
+}
+
+.unit-col {
+  flex: 1;
+}
+
+.action-col {
+  width: 60rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.ingredient-input {
+  width: 100%;
+  height: 60rpx;
+  font-size: 26rpx;
+  color: var(--text-primary);
+}
+
+/* 步骤列表 */
+.steps-list {
+  margin-bottom: 20rpx;
+}
+
+.step-item {
+  display: flex;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.step-number {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-textarea {
+  width: 100%;
+  height: 120rpx;
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 16rpx;
+  font-size: 26rpx;
+  color: var(--text-primary);
+  margin-bottom: 16rpx;
+  box-sizing: border-box;
+}
+
+.step-image-container {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.step-image-uploader {
+  width: 180rpx;
+  height: 180rpx;
+  background-color: white;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.step-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.step-tip-container {
+  flex: 1;
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 16rpx;
+}
+
+.tip-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+  color: var(--primary-color);
+}
+
+.tip-label text {
+  font-size: 24rpx;
+  margin-left: 6rpx;
+}
+
+.tip-input {
+  width: 100%;
+  font-size: 24rpx;
+  color: var(--text-primary);
+}
+
+.step-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.step-action {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+/* 标签 */
+.tags-container {
+  margin-top: 20rpx;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20rpx;
+}
+
+.tag-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--primary-color-light);
+  color: var(--primary-color);
+  padding: 8rpx 20rpx;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.tag-item text {
+  margin-right: 6rpx;
+}
+
+.tag-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: var(--primary-color);
+}
+
+.tag-selector text {
+  margin-left: 10rpx;
+}
+
+/* 标签选择器弹窗 */
+.tag-selector-container {
+  background-color: var(--bg-primary);
+  padding: 30rpx;
+  border-top-left-radius: 12rpx;
+  border-top-right-radius: 12rpx;
+}
+
+.selector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.selector-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.selector-close {
+  padding: 10rpx;
+}
+
+.tag-selector-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10rpx 30rpx;
+}
+
+.tag-selector-item {
+  width: calc(33.33% - 20rpx);
+  margin: 10rpx;
+  padding: 16rpx 0;
+  text-align: center;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: var(--text-primary);
+}
+
+.tag-selector-item.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.selector-footer {
+  margin-top: 20rpx;
+}
+
+/* 提交按钮 */
+.submit-container {
+  padding: 30rpx 0;
+  margin-top: 30rpx;
+}
+
+/* 适配难度单选项 */
+.difficulty-group {
+  display: flex;
+}
+
+/* 重写一些TDesign样式 */
+t-stepper {
+  --td-stepper-input-width: 100rpx;
+  --td-stepper-input-height: 60rpx;
+}
+
+t-radio-group {
+  width: 100%;
+} 

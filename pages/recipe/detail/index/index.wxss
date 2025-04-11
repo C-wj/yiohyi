@@ -1,0 +1,654 @@
+/* 主题变量 */
+page {
+  --primary-color: #FF9500;
+  --primary-color-light: #FFE4BF;
+  --secondary-color: #4CAF50;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-placeholder: #999999;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F6F6F6;
+  --border-color: #EEEEEE;
+}
+
+.recipe-detail-container {
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+  padding-bottom: 180rpx; /* 为底部操作栏预留空间 */
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+.loading-text {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+/* 顶部图片区域 */
+.recipe-header {
+  position: relative;
+  height: 500rpx;
+  overflow: hidden;
+}
+
+.recipe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.back-button {
+  position: absolute;
+  left: 30rpx;
+  top: 60rpx;
+  width: 70rpx;
+  height: 70rpx;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.recipe-info-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 30rpx;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+}
+
+.recipe-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 10rpx;
+}
+
+.recipe-meta {
+  display: flex;
+  font-size: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.recipe-author {
+  margin-right: 20rpx;
+}
+
+.recipe-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.recipe-tag {
+  background-color: rgba(255, 255, 255, 0.3);
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-right: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+/* 基本信息卡片 */
+.info-card {
+  margin: 20rpx;
+  background-color: var(--bg-primary);
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  padding: 20rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx;
+}
+
+.info-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background-color: var(--primary-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  margin-bottom: 10rpx;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 4rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* 通用卡片样式 */
+.section-card {
+  margin: 20rpx;
+  background-color: var(--bg-primary);
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  padding: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+  color: var(--text-primary);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+/* 描述区域 */
+.recipe-description {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* 食材区域 */
+.servings-adjuster {
+  display: flex;
+  align-items: center;
+}
+
+.servings-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-right: 10rpx;
+}
+
+.ingredients-list {
+  margin-top: 20rpx;
+}
+
+.ingredient-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.ingredient-item:last-child {
+  border-bottom: none;
+}
+
+.ingredient-name {
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.ingredient-amount {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+/* 步骤区域 */
+.steps-nav {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20rpx;
+}
+
+.step-nav-item {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+.step-nav-item.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.steps-swiper {
+  height: 500rpx;
+  margin-bottom: 20rpx;
+}
+
+.step-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
+}
+
+.step-number {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 16rpx;
+}
+
+.step-image {
+  width: 100%;
+  height: 300rpx;
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
+  background-color: var(--bg-secondary);
+}
+
+.step-description {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+}
+
+.step-tip {
+  display: flex;
+  align-items: flex-start;
+  background-color: var(--primary-color-light);
+  padding: 16rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: var(--primary-color);
+}
+
+.step-tip text {
+  margin-left: 8rpx;
+  flex: 1;
+}
+
+.steps-control {
+  display: flex;
+  justify-content: space-between;
+}
+
+.control-button {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 28rpx;
+}
+
+.control-button text {
+  margin: 0 8rpx;
+}
+
+.control-button.disabled {
+  opacity: 0.5;
+}
+
+/* 小贴士区域 */
+.recipe-tips {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* 营养成分 */
+.nutrition-info {
+  display: flex;
+  justify-content: space-around;
+  padding: 20rpx 0;
+}
+
+.nutrition-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nutrition-value {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.nutrition-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+/* 评论区域 */
+.comments-list {
+  margin-bottom: 20rpx;
+}
+
+.comment-item {
+  display: flex;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  background-color: var(--bg-secondary);
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.comment-user {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.comment-time {
+  font-size: 24rpx;
+  color: var(--text-placeholder);
+}
+
+.comment-text {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 12rpx;
+}
+
+.comment-actions {
+  display: flex;
+}
+
+.comment-like, .comment-reply {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-right: 30rpx;
+}
+
+.comment-like text, .comment-reply text {
+  margin-left: 6rpx;
+}
+
+.empty-comments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+}
+
+.empty-icon {
+  color: #CCCCCC;
+  margin-bottom: 16rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.empty-subtext {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 20rpx;
+}
+
+.comment-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 0;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+}
+
+.comment-button text {
+  margin-left: 8rpx;
+}
+
+/* 评论输入弹窗 */
+.comment-input-container {
+  background-color: var(--bg-primary);
+  padding: 30rpx;
+  border-top-left-radius: 12rpx;
+  border-top-right-radius: 12rpx;
+}
+
+.comment-input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.comment-input-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.comment-input-close {
+  padding: 10rpx;
+}
+
+.comment-textarea {
+  width: 100%;
+  height: 200rpx;
+  background-color: var(--bg-secondary);
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+}
+
+.comment-input-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-char-count {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+/* 相关推荐 */
+.recommended-list {
+  display: flex;
+  overflow-x: auto;
+  margin: 0 -10rpx;
+  padding-bottom: 10rpx;
+}
+
+.recommended-item {
+  flex: 0 0 240rpx;
+  margin: 0 10rpx;
+}
+
+.recommended-image {
+  width: 240rpx;
+  height: 180rpx;
+  border-radius: 8rpx;
+  margin-bottom: 10rpx;
+  background-color: var(--bg-secondary);
+}
+
+.recommended-title {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recommended-info {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.recommended-info text {
+  margin-right: 12rpx;
+}
+
+/* 底部操作区 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: var(--bg-primary);
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+.action-button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 120rpx;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.action-button text {
+  margin-top: 6rpx;
+}
+
+.action-button.active {
+  color: var(--primary-color);
+}
+
+.action-button.primary {
+  color: white;
+  background-color: var(--primary-color);
+}
+
+/* 作者操作区 */
+.author-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 20rpx;
+}
+
+.author-actions t-button {
+  flex: 1;
+  margin: 0 10rpx;
+}
+
+/* 分享弹窗 */
+.share-container {
+  background-color: var(--bg-primary);
+  padding: 30rpx;
+  border-top-left-radius: 12rpx;
+  border-top-right-radius: 12rpx;
+}
+
+.share-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.share-options {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 40rpx;
+}
+
+.share-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: transparent !important;
+  line-height: normal !important;
+  padding: 0 !important;
+}
+
+.share-option::after {
+  border: none !important;
+}
+
+.share-icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10rpx;
+}
+
+.share-icon.wechat {
+  background-color: #09BB07;
+  color: white;
+}
+
+.share-icon.moments {
+  background-color: #576B95;
+  color: white;
+}
+
+.share-icon.poster {
+  background-color: #FF9500;
+  color: white;
+}
+
+.share-option text {
+  font-size: 26rpx;
+  color: var(--text-primary);
+}
+
+.share-cancel {
+  margin-top: 20rpx;
+} 

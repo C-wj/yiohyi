@@ -1,0 +1,15 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "t-tabs": "tdesign-miniprogram/tabs/tabs",
+    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
+    "t-search": "tdesign-miniprogram/search/search",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-action-sheet": "tdesign-miniprogram/action-sheet/action-sheet",
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "recipe-card": "/components/recipe-card/index"
+  }
+} 

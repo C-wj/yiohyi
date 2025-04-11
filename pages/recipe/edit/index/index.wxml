@@ -1,0 +1,13 @@
+<view class="container">
+  <view class="page-header">
+    <view class="page-title">编辑菜谱</view>
+  </view>
+  
+  <view class="page-content">
+    <view class="tip-message">
+      <text>该页面正在开发中...</text>
+    </view>
+  </view>
+</view>
+
+<t-toast id="t-toast" /> 

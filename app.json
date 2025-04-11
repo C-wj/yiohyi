@@ -1,0 +1,104 @@
+{
+  "pages": [
+    "pages/home/index", 
+    "pages/my-recipes/index", 
+    "pages/order/index/index",
+    "pages/order/detail/index/index",
+    "pages/order/calendar/index/index",
+    "pages/order/add-dish/index/index",
+    "pages/my/index"
+  ],
+  "usingComponents": {
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "t-dialog": "tdesign-miniprogram/dialog/dialog"
+  },
+  "subpackages": [
+    {
+      "root": "pages/search",
+      "name": "search",
+      "pages": ["index"]
+    },
+    {
+      "root": "pages/recipe",
+      "name": "recipe",
+      "pages": [
+        "detail/index/index",
+        "edit/index/index",
+        "create/index/index",
+        "list/index/index"
+      ]
+    },
+    {
+      "root": "pages/shopping",
+      "name": "shopping",
+      "pages": [
+        "list/index/index",
+        "history/index/index"
+      ]
+    },
+    {
+      "root": "pages/login",
+      "name": "login",
+      "pages": ["login"]
+    },
+    {
+      "root": "pages/setting",
+      "name": "setting",
+      "pages": ["index"]
+    }
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FF9500",
+    "navigationBarTitleText": "家宴菜谱",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#FF9500",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "社区"
+      },
+      {
+        "pagePath": "pages/my-recipes/index",
+        "text": "我的菜谱"
+      },
+      {
+        "pagePath": "pages/order/index/index",
+        "text": "点菜"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "preloadRule": {
+    "pages/home/index": {
+      "network": "all",
+      "packages": ["search", "recipe"]
+    },
+    "pages/my-recipes/index": {
+      "network": "all",
+      "packages": ["recipe"]
+    },
+    "pages/order/index/index": {
+      "network": "all",
+      "packages": ["shopping"]
+    }
+  },
+  "resolveAlias": {
+    "~/*": "/*"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于查找附近的食材价格信息"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

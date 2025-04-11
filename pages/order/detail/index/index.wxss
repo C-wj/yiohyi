@@ -1,0 +1,186 @@
+/* 整体容器 */
+.order-detail-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+  background-color: #f5f5f5;
+}
+
+/* 顶部状态栏 */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-button {
+  padding: 10rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.menu-button {
+  padding: 10rpx;
+}
+
+/* 订单信息卡片 */
+.order-card {
+  margin: 30rpx;
+  padding: 30rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.order-date {
+  font-size: 34rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.order-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #0052d9;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.stat-divider {
+  width: 2rpx;
+  height: 60rpx;
+  background-color: #eeeeee;
+}
+
+/* 菜品选项卡 */
+.dishes-tabs {
+  margin: 0 30rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.custom-tabs {
+  --td-tab-nav-bg-color: #ffffff;
+  --td-tab-track-color: #0052d9;
+  --td-tab-active-color: #0052d9;
+}
+
+/* 菜品列表容器 */
+.dishes-container {
+  margin: 30rpx;
+  flex: 1;
+}
+
+.dishes-list {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 菜品项目 */
+.dish-item {
+  padding: 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.dish-item:last-child {
+  border-bottom: none;
+}
+
+.dish-image {
+  width: 100%;
+  height: 300rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.dish-info {
+  margin-bottom: 20rpx;
+}
+
+.dish-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.dish-time, .dish-servings {
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 6rpx;
+}
+
+/* 菜品食材 */
+.dish-ingredients {
+  background-color: #f8f8f8;
+  padding: 20rpx;
+  border-radius: 12rpx;
+}
+
+.ingredients-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.ingredient-item {
+  font-size: 26rpx;
+  color: #666666;
+  padding: 6rpx 0;
+}
+
+/* 空列表提示 */
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  color: #999999;
+}
+
+.empty-list text {
+  font-size: 28rpx;
+  margin-top: 20rpx;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 30rpx;
+  background-color: #ffffff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  z-index: 100;
+} 
