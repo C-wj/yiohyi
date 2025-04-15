@@ -38,6 +38,7 @@
   </view>
   
   <!-- 菜谱列表 -->
+  
   <view class="recipes-list" wx:if="{{recipes.length > 0}}">
     <view 
       class="recipe-item" 
