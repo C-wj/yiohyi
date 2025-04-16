@@ -61,12 +61,41 @@ Page({
     request('/api/getServiceList').then((res) => {
       const { service } = res.data.data;
       this.setData({ service });
+    }).catch(err => {
+      console.error('获取服务列表失败', err);
+      // 使用默认列表
+      this.setData({ 
+        service: [
+          { image: '/static/icon_wx.png', name: '微信', type: 'weixin', url: '' },
+          { image: '/static/icon_doc.png', name: '我的菜谱', type: 'recipes', url: '/pages/my-recipes/index' },
+          { image: '/static/icon_map.png', name: '购物清单', type: 'shopping', url: '/pages/shopping/list/index' }
+        ] 
+      });
     });
   },
 
   async getPersonalInfo() {
-    const info = await request('/api/genPersonalInfo').then((res) => res.data.data);
-    return info;
+    try {
+      const response = await request('/users/profile');
+      if (response.code >= 200 && response.code < 300) {
+        return response.data.data;
+      } else {
+        // 返回默认用户信息
+        return {
+          image: '/static/avatar1.png',
+          name: '未登录用户',
+          gender: 0
+        };
+      }
+    } catch (err) {
+      console.error('获取用户信息失败', err);
+      // 返回默认用户信息
+      return {
+        image: '/static/avatar1.png',
+        name: '未登录用户',
+        gender: 0
+      };
+    }
   },
 
   onLogin(e) {

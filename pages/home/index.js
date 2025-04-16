@@ -150,7 +150,15 @@ Page({
     });
     
     try {
-      const response = await request('/home/cards');
+      // 使用分页参数
+      const response = await request('/home/cards', 'GET', {
+        page: this.data.page,
+        limit: this.data.pageSize,
+        category: this.data.categories[this.data.currentCategory].id > 0 
+          ? this.data.categories[this.data.currentCategory].name 
+          : undefined
+      });
+      
       const newRecipes = this.processRecipeData(response.data.data);
       
       // 更新列表数据
