@@ -58,15 +58,25 @@ Page({
   },
 
   getServiceList() {
-    request('/api/getServiceList').then((res) => {
-      const { service } = res.data.data;
-      this.setData({ service });
+    request('/api/v1/services', 'GET').then((res) => {
+      if (res.code === 200) {
+        const { service } = res.data;
+        this.setData({ service });
+      }
     });
   },
 
   async getPersonalInfo() {
-    const info = await request('/api/genPersonalInfo').then((res) => res.data.data);
-    return info;
+    try {
+      const res = await request('/api/v1/users/profile', 'GET');
+      if (res.code === 200) {
+        return res.data;
+      }
+      return {};
+    } catch (error) {
+      console.error('获取个人信息失败', error);
+      return {};
+    }
   },
 
   onLogin(e) {

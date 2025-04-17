@@ -66,16 +66,20 @@ Page({
 
   async login() {
     if (this.data.isPasswordLogin) {
-      const res = await request('/login/postPasswordLogin', 'post', { data: this.data.passwordInfo });
-      if (res.success) {
-        await wx.setStorageSync('access_token', res.data.token);
+      const res = await request('/api/v1/auth/login', 'post', { 
+        data: this.data.passwordInfo 
+      });
+      if (res.code === 200) {
+        await wx.setStorageSync('access_token', res.data.access_token);
         wx.switchTab({
           url: `/pages/my/index`,
         });
       }
     } else {
-      const res = await request('/login/getSendMessage', 'get');
-      if (res.success) {
+      const res = await request('/api/v1/auth/send-sms', 'post', {
+        data: { phoneNumber: this.data.phoneNumber }
+      });
+      if (res.code === 200) {
         wx.navigateTo({
           url: `/pages/loginCode/loginCode?phoneNumber=${this.data.phoneNumber}`,
         });

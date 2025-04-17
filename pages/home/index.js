@@ -116,17 +116,19 @@ Page({
       // 获取菜谱列表
       const recipesRes = await request('/home/cards');
       
-      // 更新数据
-      this.setData({
-        swiperList: swipersRes.data.data.map(item => ({
-          image: item,
-          key: Math.random().toString(36).substring(2)
-        })),
-        recipeList: this.processRecipeData(recipesRes.data.data),
-        hasMore: recipesRes.data.data.length >= this.data.pageSize,
-        page: 1
-      });
-      
+      // 确保有数据返回
+      if (swipersRes.data && recipesRes.data) {
+        // 更新数据
+        this.setData({
+          swiperList: Array.isArray(swipersRes.data) ? swipersRes.data.map(item => ({
+            image: item.image_url || item.image,
+            key: item.id || Math.random().toString(36).substring(2)
+          })) : [],
+          recipeList: this.processRecipeData(recipesRes.data),
+          hasMore: Array.isArray(recipesRes.data) && recipesRes.data.length >= this.data.pageSize,
+          page: 1
+        });
+      }
     } catch (error) {
       console.error('加载数据失败', error);
       Toast({
@@ -151,14 +153,16 @@ Page({
     
     try {
       const response = await request('/home/cards');
-      const newRecipes = this.processRecipeData(response.data.data);
       
-      // 更新列表数据
-      this.setData({
-        recipeList: [...this.data.recipeList, ...newRecipes],
-        hasMore: newRecipes.length >= this.data.pageSize
-      });
-      
+      if (response.data) {
+        const newRecipes = this.processRecipeData(response.data);
+        
+        // 更新列表数据
+        this.setData({
+          recipeList: [...this.data.recipeList, ...newRecipes],
+          hasMore: Array.isArray(response.data) && response.data.length >= this.data.pageSize
+        });
+      }
     } catch (error) {
       console.error('加载更多失败', error);
       Toast({
@@ -171,10 +175,15 @@ Page({
     }
   },
   processRecipeData(data) {
+    if (!Array.isArray(data)) {
+      console.warn('处理的数据不是数组格式', data);
+      return [];
+    }
+    
     return data.map(item => ({
-      id: Math.random().toString(36).substr(2, 9),
-      title: `美味${item.desc.substring(0, 10)}`,
-      image: item.url,
+      id: item.id || Math.random().toString(36).substr(2, 9),
+      title: item.title || `美味${(item.description || item.desc || '').substring(0, 10)}`,
+      image: item.image_url || item.image || item.url,
       author: {
         name: '厨艺达人',
         avatar: '/static/avatar1.png'
@@ -184,7 +193,7 @@ Page({
       isFavorite: false,
       cookTime: Math.floor(Math.random() * 60) + 10,
       difficulty: ['简单', '普通', '困难'][Math.floor(Math.random() * 3)],
-      tags: item.tags
+      tags: item.tags || []
     }));
   },
   showOperMsg(content) {

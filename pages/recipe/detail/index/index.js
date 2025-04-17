@@ -95,23 +95,25 @@ Page({
     this.setData({ loading: true });
     
     try {
-      // 在真实项目中，这里应该是从API获取菜谱详情
-      // 这里使用模拟数据
-      const response = await this.getMockRecipeDetail(this.data.recipeId);
+      const response = await request(`/recipes/${this.data.recipeId}`, 'GET');
       
-      // 检查是否是菜谱作者
-      const isOwner = this.data.userInfo && 
-        this.data.userInfo.id === response.author.id;
-      
-      this.setData({
-        recipe: response,
-        loading: false,
-        isOwner,
-        isLiked: response.isLiked || false,
-        isFavorite: response.isFavorite || false,
-        originalServings: response.servings,
-        servings: response.servings
-      });
+      if (response.code === 200) {
+        // 检查是否是菜谱作者
+        const isOwner = this.data.userInfo && 
+          this.data.userInfo.id === response.data.creator.userId;
+        
+        this.setData({
+          recipe: response.data,
+          loading: false,
+          isOwner,
+          isLiked: response.data.isLiked || false,
+          isFavorite: response.data.isFavorite || false,
+          originalServings: response.data.servings,
+          servings: response.data.servings
+        });
+      } else {
+        throw new Error(response.msg || '获取菜谱数据失败');
+      }
       
     } catch (error) {
       console.error('获取菜谱详情失败', error);
@@ -130,45 +132,16 @@ Page({
   // 获取评论
   async fetchComments() {
     try {
-      // 模拟评论数据
-      const comments = [
-        {
-          id: '1',
-          user: {
-            id: '101',
-            name: '张三',
-            avatar: '/static/avatar1.png'
-          },
-          content: '这道菜我做过，很好吃，家人都很喜欢！',
-          createTime: '2023-06-10 15:23',
-          likes: 8
-        },
-        {
-          id: '2',
-          user: {
-            id: '102',
-            name: '李四',
-            avatar: '/static/avatar2.png'
-          },
-          content: '请问第三步里的调料是放多少呢？',
-          createTime: '2023-06-09 18:45',
-          likes: 2
-        },
-        {
-          id: '3',
-          user: {
-            id: '103',
-            name: '王五',
-            avatar: '/static/avatar3.png'
-          },
-          content: '我按照你的方法做了，但是味道好像不太一样，是不是火候的问题？',
-          createTime: '2023-06-08 20:19',
-          likes: 5
-        }
-      ];
+      const response = await request(`/recipes/${this.data.recipeId}/reviews`, 'GET', {
+        page: 1,
+        limit: 10
+      });
       
-      this.setData({ comments });
-      
+      if (response.code === 200) {
+        this.setData({ comments: response.data.comments });
+      } else {
+        console.error('获取评论失败', response.msg);
+      }
     } catch (error) {
       console.error('获取评论失败', error);
       Toast({
@@ -267,39 +240,78 @@ Page({
   },
   
   // 点赞菜谱
-  onLikeRecipe() {
+  async onLikeRecipe() {
     const { isLiked, recipe } = this.data;
     
-    // 更新点赞状态
-    this.setData({
-      isLiked: !isLiked,
-      'recipe.likes': isLiked ? recipe.likes - 1 : recipe.likes + 1
-    });
-    
-    Toast({
-      context: this,
-      selector: '#t-toast',
-      message: isLiked ? '已取消点赞' : '已点赞',
-    });
-    
-    // 在实际应用中，这里需要调用API更新点赞状态
+    try {
+      // 调用后端API更新点赞状态
+      const response = await request(`/recipes/${this.data.recipeId}/like`, 'POST');
+      
+      if (response.code === 200) {
+        this.setData({
+          isLiked: !isLiked,
+          'recipe.stats.likeCount': isLiked ? recipe.stats.likeCount - 1 : recipe.stats.likeCount + 1
+        });
+        
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: isLiked ? '已取消点赞' : '已点赞',
+        });
+      } else {
+        throw new Error(response.msg || '操作失败');
+      }
+    } catch (error) {
+      console.error('点赞操作失败', error);
+      Toast({
+        context: this,
+        selector: '#t-toast',
+        message: '操作失败，请重试',
+      });
+    }
   },
   
   // 收藏菜谱
-  onFavoriteRecipe() {
-    const { isFavorite } = this.data;
+  async onFavoriteRecipe() {
+    if (!this.data.userInfo) {
+      // 提示用户登录
+      Dialog.confirm({
+        context: this,
+        title: '提示',
+        content: '请先登录后再收藏菜谱',
+        confirmBtn: '去登录',
+        cancelBtn: '取消'
+      }).then(() => {
+        wx.navigateTo({
+          url: '/pages/login/login'
+        });
+      });
+      return;
+    }
     
-    this.setData({
-      isFavorite: !isFavorite
-    });
-    
-    Toast({
-      context: this,
-      selector: '#t-toast',
-      message: isFavorite ? '已取消收藏' : '已收藏',
-    });
-    
-    // 在实际应用中，这里需要调用API更新收藏状态
+    try {
+      const result = await request(`/recipes/${this.data.recipeId}/favorite`, 'POST');
+      
+      if (result.code === 200) {
+        const isFavorite = result.data.is_favorite;
+        this.setData({ isFavorite });
+        
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: isFavorite ? '收藏成功' : '已取消收藏'
+        });
+      } else {
+        throw new Error(result.msg || '操作失败');
+      }
+    } catch (error) {
+      console.error('收藏操作失败', error);
+      Toast({
+        context: this,
+        selector: '#t-toast',
+        message: '收藏操作失败，请重试'
+      });
+    }
   },
   
   // 分享菜谱
@@ -384,45 +396,64 @@ Page({
   },
   
   // 提交评论
-  onSubmitComment() {
-    const { commentContent, comments, userInfo } = this.data;
-    
-    if (!commentContent.trim()) {
+  async onSubmitComment() {
+    if (!this.data.commentContent.trim()) {
       Toast({
         context: this,
         selector: '#t-toast',
-        message: '请输入评论内容',
+        message: '评论内容不能为空'
       });
       return;
     }
     
-    // 创建新评论对象
-    const newComment = {
-      id: `temp-${Date.now()}`,
-      user: {
-        id: userInfo.id,
-        name: userInfo.nickName,
-        avatar: userInfo.avatarUrl || '/static/default-avatar.png'
-      },
-      content: commentContent,
-      createTime: '刚刚',
-      likes: 0
-    };
+    if (!this.data.userInfo) {
+      Dialog.confirm({
+        context: this,
+        title: '提示',
+        content: '请先登录后再评论',
+        confirmBtn: '去登录',
+        cancelBtn: '取消'
+      }).then(() => {
+        wx.navigateTo({
+          url: '/pages/login/login'
+        });
+      });
+      return;
+    }
     
-    // 添加到评论列表
-    this.setData({
-      comments: [newComment, ...comments],
-      showCommentInput: false,
-      commentContent: ''
-    });
-    
-    Toast({
-      context: this,
-      selector: '#t-toast',
-      message: '评论已发布',
-    });
-    
-    // 在实际应用中，这里需要调用API提交评论
+    try {
+      const response = await request(`/recipes/${this.data.recipeId}/reviews`, 'POST', {
+        content: this.data.commentContent,
+        rating: 5,  // 默认5星评分
+        images: []  // 暂不支持图片
+      });
+      
+      if (response.code === 200) {
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: '评论发布成功'
+        });
+        
+        // 清空评论并隐藏输入框
+        this.setData({
+          commentContent: '',
+          showCommentInput: false
+        });
+        
+        // 刷新评论列表
+        this.fetchComments();
+      } else {
+        throw new Error(response.msg || '发布评论失败');
+      }
+    } catch (error) {
+      console.error('发布评论失败', error);
+      Toast({
+        context: this,
+        selector: '#t-toast',
+        message: '发布评论失败，请重试'
+      });
+    }
   },
   
   // 点击推荐菜谱
