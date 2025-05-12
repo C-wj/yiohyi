@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/home/index", 
-    "pages/my-recipes/index", 
+    "pages/home/index",
+    "pages/my-recipes/index",
     "pages/order/index/index",
     "pages/order/detail/index/index",
     "pages/order/calendar/index/index",

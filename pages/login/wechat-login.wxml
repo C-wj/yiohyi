@@ -1,0 +1,37 @@
+<t-navbar left-arrow bind:go-back="handleBack" />
+<view class="page wechat-login">
+  <view class="wechat-login__header">
+    <image class="logo" src="/assets/images/logo.png" mode="aspectFit"></image>
+    <view class="title">家宴菜谱</view>
+    <view class="subtitle">记录家的味道，分享美食记忆</view>
+  </view>
+
+  <view class="wechat-login__content">
+    <view class="description">
+      <text>登录后即可使用家宴菜谱的全部功能</text>
+      <text>包括创建菜谱、家庭点菜、购物清单等</text>
+    </view>
+
+    <view class="wechat-login__button">
+      <t-button 
+        theme="primary" 
+        size="large" 
+        block 
+        icon="logo-wechat" 
+        loading="{{isLoading}}"
+        disabled="{{isLoading}}"
+        bindtap="handleWechatLogin">
+        微信一键登录
+      </t-button>
+    </view>
+
+    <view class="error-message" wx:if="{{errorMessage}}">
+      <t-icon name="error-circle" size="40rpx" color="#E34D59"></t-icon>
+      <text>{{errorMessage}}</text>
+    </view>
+  </view>
+
+  <view class="wechat-login__footer">
+    <t-checkbox value="{{true}}" label="登录即表示同意《用户协议》和《隐私政策》" borderless />
+  </view>
+</view>
