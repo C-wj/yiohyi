@@ -50,7 +50,7 @@ Page({
   async loginWithCode(code) {
     try {
       // 调用后端微信登录接口
-      const res = await request('/api/v1/auth/wechat-login', 'post', {
+      const res = await request('/auth/wechat-login', 'post', {
         code: code,
         user_info: null // 可以在用户授权后获取更多信息
       });
@@ -67,7 +67,7 @@ Page({
         
         // 跳转到首页
         wx.switchTab({
-          url: '/pages/home/index',
+          url: '/pages/my/index',
         });
       } else {
         this.setData({
@@ -77,9 +77,13 @@ Page({
       }
     } catch (error) {
       console.error('登录请求失败', error);
+      let errorMsg = '登录请求失败，请检查网络连接';
+      if (error.data && error.data.detail) {
+        errorMsg = error.data.detail;
+      }
       this.setData({
         isLoading: false,
-        errorMessage: '登录请求失败，请检查网络连接',
+        errorMessage: errorMsg,
       });
     }
   },

@@ -39,7 +39,7 @@
     {
       "root": "pages/login",
       "name": "login",
-      "pages": ["login"]
+      "pages": ["login", "wechat-login", "forgot-password"]
     },
     {
       "root": "pages/setting",

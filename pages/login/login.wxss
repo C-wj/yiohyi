@@ -1,0 +1,447 @@
+/* 全局容器 */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+  padding: 0 30rpx;
+}
+
+/* 头部区域 */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0 60rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 表单区域 */
+.form {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  margin-bottom: 30rpx;
+}
+
+/* 注册标题 */
+.register-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  margin-bottom: 30rpx;
+  color: #333;
+  text-align: center;
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  border-bottom: 1rpx solid #eee;
+  margin-bottom: 30rpx;
+}
+
+.tab {
+  position: relative;
+  padding: 0 20rpx 20rpx;
+  font-size: 30rpx;
+  color: #666;
+  margin-right: 40rpx;
+}
+
+.tab.active {
+  color: #07c160;
+  font-weight: 500;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1rpx;
+  width: 100%;
+  height: 4rpx;
+  background-color: #07c160;
+  border-radius: 2rpx;
+}
+
+/* 输入组 */
+.input-group {
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid #eee;
+  padding: 20rpx 0;
+  position: relative;
+  margin-bottom: 10rpx;
+}
+
+.input-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-icon image {
+  width: 100%;
+  height: 100%;
+}
+
+.input {
+  flex: 1;
+  height: 48rpx;
+  font-size: 28rpx;
+}
+
+.placeholder {
+  color: #ccc;
+}
+
+/* 验证码按钮 */
+.code-input {
+  width: 60%;
+}
+
+.code-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 26rpx;
+  color: #07c160;
+  padding: 10rpx 20rpx;
+  border-left: 1rpx solid #eee;
+}
+
+.code-btn.disabled {
+  color: #ccc;
+}
+
+/* 忘记密码 */
+.action-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+}
+
+.forget-text {
+  font-size: 26rpx;
+  color: #07c160;
+}
+
+/* 协议区域 */
+.agreement {
+  display: flex;
+  align-items: center;
+  margin: 30rpx 0;
+}
+
+.agreement checkbox {
+  transform: scale(0.8);
+  margin-right: 8rpx;
+}
+
+.agreement-text {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 按钮区域 */
+.btn-area {
+  margin: 40rpx 0 20rpx;
+}
+
+.primary-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background-color: #07c160;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 12rpx;
+  font-weight: 500;
+  border: none;
+}
+
+.primary-btn.disabled {
+  background-color: #9be6b4;
+}
+
+.primary-btn::after {
+  border: none;
+}
+
+/* 切换登录/注册 */
+.switch-action {
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 30rpx;
+}
+
+.link-text {
+  color: #07c160;
+}
+
+/* 其他登录方式 */
+.other-login {
+  margin-top: 60rpx;
+}
+
+.divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40rpx;
+}
+
+.divider-line {
+  width: 30%;
+  height: 1rpx;
+  background-color: #eee;
+}
+
+.divider-text {
+  font-size: 26rpx;
+  color: #999;
+  padding: 0 20rpx;
+}
+
+.other-login-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.wechat-btn {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+  padding: 0;
+  line-height: normal;
+}
+
+.wechat-btn::after {
+  border: none;
+}
+
+.wechat-btn image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+/* 选项卡样式 */
+.login__tab-bar {
+  display: flex;
+  margin-bottom: 40rpx;
+}
+
+.login__tab {
+  padding: 20rpx 10rpx;
+  font-size: 32rpx;
+  color: #999;
+  margin-right: 40rpx;
+  position: relative;
+}
+
+.login__tab.active {
+  color: #333;
+  font-weight: 500;
+}
+
+.login__tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4rpx;
+  background-color: #333;
+  border-radius: 2rpx;
+}
+
+.login__password,
+.login__code {
+  margin-bottom: 32rpx;
+}
+
+.login__actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20rpx;
+}
+
+.login__forget {
+  font-size: 28rpx;
+  color: #0066cc;
+  text-align: right;
+}
+
+.login__register {
+  margin-bottom: 32rpx;
+}
+
+.login__agreement {
+  display: flex;
+  align-items: center;
+  margin: 24rpx 0;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.login__agreement checkbox {
+  transform: scale(0.8);
+  margin-right: 8rpx;
+}
+
+.login__button {
+  margin-top: 48rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background-color: #0052d9;
+  color: white;
+  font-size: 32rpx;
+  border-radius: 44rpx;
+}
+
+.submit-btn[disabled] {
+  background-color: #cccccc;
+  color: #fff;
+}
+
+.login__switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 32rpx;
+}
+
+.login__switch .link {
+  color: #0066cc;
+}
+
+.login__others {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80rpx;
+}
+
+.login__others-line {
+  position: relative;
+  text-align: center;
+  margin-bottom: 48rpx;
+  width: 100%;
+}
+
+.login__others-line::before,
+.login__others-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background-color: #eee;
+}
+
+.login__others-line::before {
+  left: 0;
+}
+
+.login__others-line::after {
+  right: 0;
+}
+
+.login__others-text {
+  display: inline-block;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #999;
+  background-color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.login__others-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.wechat-btn {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 2rpx solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+}
+
+.wechat-btn::after {
+  content: '';
+  width: 44rpx;
+  height: 44rpx;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB0PSIxNjcwOTE0MTczMjg4IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjMyNTciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48cGF0aCBkPSJNMzM3LjE1ODI1NSAzMzIuMTE4NjE2YzAgMzAuNDQ0OTAzLTI0LjM2MDcwNyA1NS4xNTk2MjMtNTQuODE1NDk4IDU1LjE1OTYyMy0zMC40MzQwNzQgMC01NC44MjQtMjQuNzE1NTQzLTU0LjgyNC01NS4xNTk2MjMgMC0zMC40NTQwOCAyNC4zODk5MjYtNTUuMTU0NTI4IDU0LjgyNC01NS4xNTQ1MjhDMzEyLjc5NzU0OSAyNzYuOTY0MDg4IDMzNy4xNTgyNTUgMzAxLjY2NDUzNiAzMzcuMTU4MjU1IDMzMi4xMTg2MTZ6TTU4Ni41ODUzMjggMjI0LjgwNTgyNGMtMzkuOTM4OTYzIDAtNzMuODEyNDgxIDI0LjkzNzE3MS03NC4xNjU3ODQgNDQuMDk1MDE3bC0wLjQ1MDMwNCAyNDUuMDcyMzY5TDM3My40NjEwNjEgNTE0Ljg4MjQ0N2wwLjYxMzg4OS0yNTEuNzc2MUMzNzMuOTE1MjQ0IDIzMC44MDU2OTYgMzI5LjUyODA2NCAxNjkuNjE5NTE5IDI2OS4yNTE4NCAxNjkuNjE5NTE5Yy02MS43NTM3NSAwLTEwMy44OTk0NzcgNTkuNjUzMzQxLTEwMy44OTk0NzcgOTQuNjQ1NTM1bC0wLjYxNDcxMiAyMjkuMTMzNDk1IDEuNTY2MjIgMTYuOTQyNTczYzMuNzQ1MTc2IDQwLjI1MzA4OCA1Mi44NTUzODEgMTM3LjkzNjc0OSAyNjguODEzNzAzIDkxLjEwNDI2MmwwLjAwMTY0NyAwLjA4MDc1MWMyLjc5NTk1Mi0wLjk0MzQxNSA1Ljc1NjE1My0xLjY3NDE0MyA4LjcxNDA3OC0xLjY3NDE0MyA1MS44MTIxNTQgMTAuNDc5MjY5IDExNS4zMTUxNzQgNDMuNTMwNDQyIDE2NS4yNTkyMDMgNDMuNTMwNDQyIDc5LjE2MDA5IDAgMTM5LjQ0NzQ1LTg2LjA1NzY2NyAxMzkuNDQ3NDUtMTYwLjkzODk0QzY5My41NjAzNjIgNDU1LjA1NzI0NCA1ODYuNTg1MzI4IDM5MS45Mjc2OTcgNTg2LjU4NTMyOCAyMjQuODA1ODI0ek04MDAuMjI3MzgyIDMzMi4xMTg2MTZDODA4LjEyMTM2IDMwMS42NjQ1MzYgNzc3LjczMzA4NSAyNzYuOTY0MDg4IDc0Ny4zMDgyMjcgMjc2Ljk2NDA4OGMtMzAuNDM0ODk3IDAtNTQuODI0ODIzIDI0LjcwMDQ0OC01NC44MjQ4MjMgNTUuMTU0NTI4IDAgMzAuNDQ0MDggMjQuMzg5OTI2IDU1LjE1OTYyMyA1NC44MjQ4MjMgNTUuMTU5NjIzQzc3Ny43MzMwODUgMzg3LjI3ODIzOCA4MDguMTIxMzYgMzYyLjU2MjY5NiA4MDAuMjI3MzgyIDMzMi4xMTg2MTZ6TTYyNy4xMTczNTcgNjk1LjA3NTgzN2MwLTIzLjgwNTMwOS0yMS41MDYzNzItNDYuMTI2NzI5LTQ3LjgzNDM0My00Ni4xMjY3MjktMjYuMzEzMDM0IDAtNDcuODIzNTE1IDIyLjMyMTQyLTQ3LjgyMzUxNSA0Ni4xMjY3MjkgMCAyMy44MjIwNTcgMjEuNTEwNDgxIDQ2LjE0MTgyNCA0Ny44MjM1MTUgNDYuMTQxODI0QzYwNS42MTA5ODUgNzQxLjIxNzY2MSA2MjcuMTE3MzU3IDcxOC44OTc4OTQgNjI3LjExNzM1NyA2OTUuMDc1ODM3eiIgZmlsbD0iIzA3QzE2MCIgcC1pZD0iMzI1OCI+PC9wYXRoPjxwYXRoIGQ9Ik05MTAuMjIyMTcyIDYxMC4xNDMwNTJjMC0xMTQuMzMzMTM1LTExNC41NTM5NDEtMjA3LjAwNDQxNi0yNDMuNTA5MjE1LTIwNy4wMDQ0MTYtMTM2LjQ4OTg0NyAwLTI0My44MzQ5MTIgOTIuNjcxMjgxLTI0My44MzQ5MTIgMjA3LjAwNDQxNiAwIDExNC41MDk0OTYgMTA3LjM0NTg4OSAyMDYuOTk4NDk4IDI0My44MzQ5MTIgMjA2Ljk5ODQ5OCAyOC41MzU3NjIgMCA1Ny4wNzQ4NzctNy4xNDIyMDEgODUuNjE1Mjc5LTE0LjI3NDM3OWwwLjYxNTUzNSAwLjM0ODI3MiA3OC4yNjI1NDMgNDIuODk3NTQ5LTIxLjQyNDc5OC02NC4xNTM0NTIgMC43ODkyNzItMC41NTgyMjdDODg4LjgzMzMzNSA3NDIuNzI5OTY5IDkxMC4yMjEzNDkgNjc5LjYyNTEwNSA5MTAuMjIyMTcyIDYxMC4xNDMwNTJ6TTU5MC4zNTY4MTkgNTgxLjAxNTU1MWMtMTYuNTg5MjcgMC0zMC40NDQwOC0xMy44NTM5ODctMzAuNDQ0MDgtMzAuNDQ0MDggMC0xNi41NzQxNzQgMTMuODU0ODEtMzAuNDMwNjM3IDMwLjQ0NDA4LTMwLjQzMDYzNyAxNi41ODkyNyAwIDMwLjA3NTIwMSAxMy44NTU2MzQgMzAuMDc1MjAxIDMwLjQzMDYzN0M2MjAuNDMyMDIgNTY3LjE2MTU2NCA2MDYuOTQ2MDg5IDU4MS4wMTU1NTEgNTkwLjM1NjgxOSA1ODEuMDE1NTUxek03NDMuNDY3MjE5IDU4MS4wMTU1NTFjLTE2LjU4ODQ0NyAwLTMwLjA2MTAzNC0xMy44NTM5ODctMzAuMDYxMDM0LTMwLjQ0NDA4IDAtMTYuNTc0MTc0IDEzLjQ3MjU4Ny0zMC40MzA2MzcgMzAuMDYxMDM0LTMwLjQzMDYzNyAxNi41ODg0NDcgMCAzMC40NDk5OTggMTMuODU1NjM0IDMwLjQ0OTk5OCAzMC40MzA2MzdDNzczLjkxNzIxNyA1NjcuMTYxNTY0IDc2MC4wNTU2NjYgNTgxLjAxNTU1MSA3NDMuNDY3MjE5IDU4MS4wMTU1NTF6IiBmaWxsPSIjMDdDMTYwIiBwLWlkPSIzMjU5Ij48L3BhdGg+PC9zdmc+');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* 表单样式 */
+t-input {
+  margin-bottom: 30rpx;
+  height: 96rpx;
+  border-bottom: 1px solid #eee;
+}
+
+.suffix {
+  display: flex;
+  align-items: center;
+}
+
+.suffix--line {
+  width: 1rpx;
+  height: 36rpx;
+  background-color: #ddd;
+  margin: 0 16rpx;
+}
+
+.radio-class {
+  margin-bottom: 40rpx;
+  padding-left: 0;
+}
+
+.radio-class-icon {
+  font-size: 48rpx;
+}
+
+.radio-class-label {
+  font-size: 28rpx;
+  color: #666;
+} 
