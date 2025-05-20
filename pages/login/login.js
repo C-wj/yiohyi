@@ -1,197 +1,201 @@
-// pages/login/login.js
-
-const app = getApp()
+import request from '~/api/request';
 
 Page({
   data: {
-    currentTab: 'password', // 当前选中的标签页 'password' 或 'code'
-    phoneNumber: '',
-    password: '',
-    code: '',
-    isShowPassword: false,
     isCheck: false,
-    submitDisabled: true,
-    countdown: 0,
-    timer: null,
+    isSubmit: false,
+    showRegister: true,
+    isRegister: false,
+    passwordInfo: {
+      account: '',
+      password: '',
+    },
+    registerInfo: {
+      username: '',
+      nickname: '',
+      password: '',
+      confirmPassword: '',
+      email: '',
+      phone: '',
+    },
+    radioValue: '',
   },
 
-  onLoad: function (options) {
-    
-  },
-
-  // 切换标签页
-  switchTab(e) {
-    const tab = e.currentTarget.dataset.tab;
-    this.setData({
-      currentTab: tab
-    });
-    this.changeSubmit();
-  },
-
-  // 输入手机号
-  inputPhone(e) {
-    this.setData({
-      phoneNumber: e.detail.value
-    });
-    this.changeSubmit();
-  },
-
-  // 输入密码
-  inputPassword(e) {
-    this.setData({
-      password: e.detail.value
-    });
-    this.changeSubmit();
-  },
-
-  // 输入验证码
-  inputCode(e) {
-    this.setData({
-      code: e.detail.value
-    });
-    this.changeSubmit();
-  },
-
-  // 切换密码显示状态
-  togglePasswordVisibility() {
-    this.setData({
-      isShowPassword: !this.data.isShowPassword
-    });
-  },
-
-  // 协议同意变更
-  onCheckboxChange(e) {
-    this.setData({
-      isCheck: !this.data.isCheck
-    });
-    this.changeSubmit();
-  },
-
-  // 改变提交按钮状态
+  /* 自定义功能函数 */
   changeSubmit() {
-    let isDisabled = true;
-    
-    if (this.data.currentTab === 'password') {
-      // 密码登录验证
-      const isValidPhone = /^1[3-9]\d{9}$/.test(this.data.phoneNumber);
-      const isValidPassword = this.data.password.length >= 6;
-      
-      isDisabled = !(isValidPhone && isValidPassword && this.data.isCheck);
+    if (this.data.isRegister) {
+      if (
+        this.data.registerInfo.username !== '' &&
+        this.data.registerInfo.nickname !== '' &&
+        this.data.registerInfo.password !== '' &&
+        this.data.registerInfo.confirmPassword !== '' &&
+        this.data.registerInfo.password === this.data.registerInfo.confirmPassword &&
+        this.data.isCheck
+      ) {
+        this.setData({ isSubmit: true });
+      } else {
+        this.setData({ isSubmit: false });
+      }
+    } else if (this.data.passwordInfo.account !== '' && this.data.passwordInfo.password !== '' && this.data.isCheck) {
+      this.setData({ isSubmit: true });
     } else {
-      // 验证码登录验证
-      const isValidPhone = /^1[3-9]\d{9}$/.test(this.data.phoneNumber);
-      const isValidCode = /^\d{6}$/.test(this.data.code);
-      
-      isDisabled = !(isValidPhone && isValidCode && this.data.isCheck);
+      this.setData({ isSubmit: false });
     }
-    
+  },
+
+  // 用户协议选择变更
+  onCheckChange(e) {
+    const { value } = e.detail;
     this.setData({
-      submitDisabled: isDisabled
+      radioValue: value,
+      isCheck: value === 'agree',
+    });
+    this.changeSubmit();
+  },
+
+  // 登录表单输入变更
+  onAccountChange(e) {
+    this.setData({ passwordInfo: { ...this.data.passwordInfo, account: e.detail.value } });
+    this.changeSubmit();
+  },
+
+  onPasswordChange(e) {
+    this.setData({ passwordInfo: { ...this.data.passwordInfo, password: e.detail.value } });
+    this.changeSubmit();
+  },
+
+  // 注册表单输入变更
+  onRegisterUsernameChange(e) {
+    this.setData({ registerInfo: { ...this.data.registerInfo, username: e.detail.value } });
+    this.changeSubmit();
+  },
+
+  onRegisterNicknameChange(e) {
+    this.setData({ registerInfo: { ...this.data.registerInfo, nickname: e.detail.value } });
+    this.changeSubmit();
+  },
+
+  onRegisterPasswordChange(e) {
+    this.setData({ registerInfo: { ...this.data.registerInfo, password: e.detail.value } });
+    this.changeSubmit();
+  },
+
+  onRegisterConfirmPasswordChange(e) {
+    this.setData({ registerInfo: { ...this.data.registerInfo, confirmPassword: e.detail.value } });
+    this.changeSubmit();
+  },
+
+  // 显示注册表单
+  showRegisterForm() {
+    this.setData({ 
+      isRegister: true,
+      showRegister: false,
+      isSubmit: false 
     });
   },
 
-  // 发送验证码
-  sendCode() {
-    if (this.data.countdown > 0) return;
-    
-    const isValidPhone = /^1[3-9]\d{9}$/.test(this.data.phoneNumber);
-    if (!isValidPhone) {
+  // 显示登录表单
+  showLoginForm() {
+    this.setData({ 
+      isRegister: false,
+      showRegister: true,
+      isSubmit: false 
+    });
+  },
+
+  // 账号密码登录
+  async login() {
+    try {
+      // 直接发送passwordInfo对象，不再包装到data字段中
+      const res = await request('/auth/login', 'post', this.data.passwordInfo);
+      
+      if (res.code === 200) {
+        await wx.setStorageSync('access_token', res.data.access_token);
+        await wx.setStorageSync('refresh_token', res.data.refresh_token);
+        
+        wx.showToast({
+          title: '登录成功',
+          icon: 'success',
+          duration: 2000,
+          success: () => {
+            wx.switchTab({
+              url: `/pages/my/index`,
+            });
+          }
+        });
+      } else {
+        wx.showToast({
+          title: res.msg || '登录失败',
+          icon: 'error',
+          duration: 2000
+        });
+      }
+    } catch (error) {
+      console.error('登录失败:', error);
+      let errorMsg = '登录失败';
+      if (error.data && error.data.detail) {
+        errorMsg = error.data.detail;
+      }
       wx.showToast({
-        title: '请输入正确的手机号',
-        icon: 'none'
+        title: errorMsg,
+        icon: 'error',
+        duration: 2000
+      });
+    }
+  },
+
+  // 注册新用户
+  async register() {
+    // 检查密码是否一致
+    if (this.data.registerInfo.password !== this.data.registerInfo.confirmPassword) {
+      wx.showToast({
+        title: '两次密码不一致',
+        icon: 'error',
+        duration: 2000
       });
       return;
     }
-    
-    // 模拟发送验证码
-    wx.showToast({
-      title: '验证码已发送',
-      icon: 'success'
-    });
-    
-    // 开始倒计时
-    this.setData({
-      countdown: 60
-    });
-    
-    this.data.timer = setInterval(() => {
-      if (this.data.countdown <= 1) {
-        clearInterval(this.data.timer);
-        this.setData({
-          countdown: 0
-        });
-      } else {
-        this.setData({
-          countdown: this.data.countdown - 1
-        });
-      }
-    }, 1000);
-  },
 
-  // 表单提交
-  formSubmit() {
-    if (this.data.submitDisabled) return;
-    
-    if (this.data.currentTab === 'password') {
-      // 密码登录
-      console.log('密码登录:', {
-        phone: this.data.phoneNumber,
-        password: this.data.password
+    try {
+      // 构建注册数据
+      const registerData = {
+        username: this.data.registerInfo.username,
+        password: this.data.registerInfo.password,
+        nickname: this.data.registerInfo.nickname,
+        email: this.data.registerInfo.email || undefined,
+        phone: this.data.registerInfo.phone || undefined
+      };
+
+      const res = await request('/auth/register', 'post', registerData);
+      
+      // 存储令牌
+      await wx.setStorageSync('access_token', res.data.access_token);
+      await wx.setStorageSync('refresh_token', res.data.refresh_token);
+      
+      wx.showToast({
+        title: '注册成功',
+        icon: 'success',
+        duration: 2000,
+        success: () => {
+          wx.switchTab({
+            url: `/pages/my/index`,
+          });
+        }
       });
-      
-      // 模拟登录成功
-      wx.showLoading({
-        title: '登录中...',
+    } catch (error) {
+      console.error('注册失败:', error);
+      wx.showToast({
+        title: error.msg || '注册失败',
+        icon: 'error',
+        duration: 2000
       });
-      
-      setTimeout(() => {
-        wx.hideLoading();
-        // 登录成功后跳转
-        wx.switchTab({
-          url: '/pages/index/index'
-        });
-      }, 1500);
-      
-    } else {
-      // 验证码登录
-      console.log('验证码登录:', {
-        phone: this.data.phoneNumber,
-        code: this.data.code
-      });
-      
-      // 模拟登录成功
-      wx.showLoading({
-        title: '登录中...',
-      });
-      
-      setTimeout(() => {
-        wx.hideLoading();
-        // 登录成功后跳转
-        wx.switchTab({
-          url: '/pages/index/index'
-        });
-      }, 1500);
     }
   },
 
-  // 忘记密码
-  forgetPassword() {
+  // 微信一键登录
+  wechatLogin() {
     wx.navigateTo({
-      url: '/pages/password/reset'
+      url: '/pages/login/wechat-login',
     });
-  },
-
-  // 切换到注册页面
-  goToRegister() {
-    wx.navigateTo({
-      url: '/pages/register/register'
-    });
-  },
-
-  onUnload() {
-    // 清除定时器
-    if (this.data.timer) {
-      clearInterval(this.data.timer);
-    }
   }
-}) 
+});
