@@ -1,6 +1,8 @@
 import Message from 'tdesign-miniprogram/message/index';
 import request from '~/api/request';
 import Toast from 'tdesign-miniprogram/toast/index';
+import { getHomeCards, getHomeSwipers } from '~/api/home';
+import { handleApiResponse, showApiError } from '~/utils/apiUtil';
 
 // 获取应用实例
 // const app = getApp()
@@ -48,16 +50,39 @@ Page({
   },
   // 生命周期
   async onReady() {
-    const [cardRes, swiperRes] = await Promise.all([
-      request('/home/cards').then((res) => res.data),
-      request('/home/swipers').then((res) => res.data),
-    ]);
+    try {
+      const [cardRes, swiperRes] = await Promise.all([
+        getHomeCards(),
+        getHomeSwipers()
+      ]);
 
-    this.setData({
-      cardInfo: cardRes.data,
-      focusCardInfo: cardRes.data.slice(0, 3),
-      swiperList: swiperRes.data,
-    });
+      // 处理卡片响应
+      handleApiResponse(cardRes, 
+        (data) => {
+          this.setData({
+            cardInfo: data,
+            focusCardInfo: data.slice(0, 3),
+          });
+        },
+        (error) => {
+          console.error('Failed to fetch card info:', error);
+        }
+      );
+
+      // 处理轮播图响应
+      handleApiResponse(swiperRes, 
+        (data) => {
+          this.setData({
+            swiperList: data,
+          });
+        },
+        (error) => {
+          console.error('Failed to fetch swiper info:', error);
+        }
+      );
+    } catch (error) {
+      showApiError(error);
+    }
   },
   onLoad(option) {
     if (wx.getUserProfile) {
@@ -111,31 +136,49 @@ Page({
     
     try {
       // 获取轮播图数据
-      const swipersRes = await request('/home/swipers');
+      const swipersRes = await getHomeSwipers();
       
       // 获取菜谱列表
-      const recipesRes = await request('/home/cards');
+      const recipesRes = await getHomeCards();
       
-      // 确保有数据返回
-      if (swipersRes.data && recipesRes.data) {
-        // 更新数据
-        this.setData({
-          swiperList: Array.isArray(swipersRes.data) ? swipersRes.data.map(item => ({
-            image: item.image_url || item.image,
-            key: item.id || Math.random().toString(36).substring(2)
-          })) : [],
-          recipeList: this.processRecipeData(recipesRes.data),
-          hasMore: Array.isArray(recipesRes.data) && recipesRes.data.length >= this.data.pageSize,
-          page: 1
-        });
-      }
+      // 处理轮播图响应
+      handleApiResponse(swipersRes, 
+        (swipersData) => {
+          // 处理菜谱列表响应
+          handleApiResponse(recipesRes, 
+            (recipesData) => {
+              // 更新数据
+              this.setData({
+                swiperList: Array.isArray(swipersData) ? swipersData.map(item => ({
+                  image: item.image_url || item.image,
+                  key: item.id || Math.random().toString(36).substring(2)
+                })) : [],
+                recipeList: this.processRecipeData(recipesData),
+                hasMore: Array.isArray(recipesData) && recipesData.length >= this.data.pageSize,
+                page: 1
+              });
+            },
+            (error) => {
+              console.error('获取菜谱列表失败', error);
+              Toast({
+                context: this,
+                selector: '#t-toast',
+                message: '菜谱数据加载失败，请重试',
+              });
+            }
+          );
+        },
+        (error) => {
+          console.error('获取轮播图失败', error);
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: '轮播图加载失败，请重试',
+          });
+        }
+      );
     } catch (error) {
-      console.error('加载数据失败', error);
-      Toast({
-        context: this,
-        selector: '#t-toast',
-        message: '数据加载失败，请重试',
-      });
+      showApiError(error);
     } finally {
       wx.hideLoading();
     }

@@ -42,12 +42,16 @@ Page({
   },
 
   async login() {
-    const res = await request('/login/postCodeVerify', 'get', { code: this.data.verifyCode });
-    if (res.success) {
-      await wx.setStorageSync('access_token', res.data.token);
-      wx.switchTab({
-        url: `/pages/my/index`,
-      });
+    try {
+      const res = await request('/login/postCodeVerify', 'get', { code: this.data.verifyCode });
+      if (res.success) {
+        await wx.setStorageSync('access_token', res.data.token);
+        wx.switchTab({
+          url: `/pages/my/index`,
+        });
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
     }
   },
 });

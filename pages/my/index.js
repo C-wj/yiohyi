@@ -1,5 +1,7 @@
 import request from '~/api/request';
 import useToastBehavior from '~/behaviors/useToast';
+import { getUserProfile } from '~/api/auth';
+import { handleApiResponse, showApiError } from '~/utils/apiUtil';
 
 Page({
   behaviors: [useToastBehavior],
@@ -90,25 +92,88 @@ Page({
         return;
       }
       
-      const res = await request('/users/profile', 'get');
-      if (res.code === 200) {
+      // 先使用本地存储的用户信息进行展示
+      const cachedNickname = wx.getStorageSync('userNickname');
+      const cachedAvatar = wx.getStorageSync('userAvatar');
+      
+      if (cachedNickname) {
         this.setData({
           isLoad: true,
           personalInfo: {
-            image: res.data.profile.avatar || '/static/avatar_default.png',
-            name: res.data.profile.nickname || '用户',
-            star: `菜谱 ${res.data.stats.recipe_count || 0}`,
-            city: res.data.profile.location || '未设置',
+            image: cachedAvatar || '/static/avatar_default.png',
+            name: cachedNickname,
+            star: `菜谱 0`,
+            city: '未设置',
           },
         });
-      } else {
-        this.setData({ isLoad: false });
-        wx.removeStorageSync('access_token');
-        wx.removeStorageSync('refresh_token');
       }
+      
+      // 然后从API获取最新的信息
+      const res = await getUserProfile();
+      console.log('用户信息响应:', res);
+      
+      // 使用辅助函数处理响应
+      handleApiResponse(res, (userData) => {
+        console.log('处理后的用户数据:', userData);
+        
+        // 获取用户昵称，尝试多种可能的路径
+        let nickname = '';
+        // 处理嵌套的profile情况 (userData.profile.profile.nickname)
+        if (userData.profile && userData.profile.profile && userData.profile.profile.nickname) {
+          nickname = userData.profile.profile.nickname;
+        }
+        // 处理单层profile情况 (userData.profile.nickname)
+        else if (userData.profile && userData.profile.nickname) {
+          nickname = userData.profile.nickname;
+        } 
+        // 直接在用户数据根层级的nickname
+        else if (userData.nickname) {
+          nickname = userData.nickname;
+        } 
+        // 使用username作为备选
+        else if (userData.username) {
+          nickname = userData.username;
+        } 
+        // 使用本地缓存或默认值
+        else {
+          nickname = cachedNickname || '用户';
+        }
+        
+        // 更新本地存储
+        if (nickname && nickname !== '用户') {
+          wx.setStorageSync('userNickname', nickname);
+        }
+        
+        const avatar = userData.profile?.avatar || userData.avatar;
+        if (avatar) {
+          wx.setStorageSync('userAvatar', avatar);
+        }
+        
+        this.setData({
+          isLoad: true,
+          personalInfo: {
+            image: avatar || cachedAvatar || '/static/avatar_default.png',
+            name: nickname,
+            star: `菜谱 ${userData.stats?.recipe_count || 0}`,
+            city: userData.profile?.location || userData.location || '未设置',
+          },
+        });
+      }, (error) => {
+        // 错误处理，只在没有缓存的情况下重置登录状态
+        if (!cachedNickname) {
+          console.error('获取用户信息失败:', error);
+          this.setData({ isLoad: false });
+          wx.removeStorageSync('access_token');
+          wx.removeStorageSync('refresh_token');
+        }
+      });
     } catch (error) {
       console.error('获取用户信息失败', error);
-      this.setData({ isLoad: false });
+      // 如果有缓存的昵称，继续显示用户信息
+      if (!wx.getStorageSync('userNickname')) {
+        this.setData({ isLoad: false });
+      }
+      showApiError(error);
     }
   },
 

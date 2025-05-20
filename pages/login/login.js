@@ -1,4 +1,5 @@
 import request from '~/api/request';
+import { handleApiResponse, showApiError } from '~/utils/apiUtil';
 
 Page({
   data: {
@@ -108,39 +109,50 @@ Page({
     try {
       // 直接发送passwordInfo对象，不再包装到data字段中
       const res = await request('/auth/login', 'post', this.data.passwordInfo);
+      console.log('登录响应:', res);
       
-      if (res.code === 200) {
-        await wx.setStorageSync('access_token', res.data.access_token);
-        await wx.setStorageSync('refresh_token', res.data.refresh_token);
-        
-        wx.showToast({
-          title: '登录成功',
-          icon: 'success',
-          duration: 2000,
-          success: () => {
-            wx.switchTab({
-              url: `/pages/my/index`,
-            });
+      handleApiResponse(res, (tokenData) => {
+        // 登录成功处理
+        if (tokenData.access_token) {
+          // 存储令牌
+          wx.setStorageSync('access_token', tokenData.access_token);
+          if (tokenData.refresh_token) {
+            wx.setStorageSync('refresh_token', tokenData.refresh_token);
           }
-        });
-      } else {
-        wx.showToast({
-          title: res.msg || '登录失败',
-          icon: 'error',
-          duration: 2000
-        });
-      }
+          
+          // 如果响应中包含用户信息，则存储
+          if (tokenData.user || tokenData.profile) {
+            const userInfo = tokenData.user || tokenData.profile || {};
+            // 存储用户基本信息，便于快速获取
+            if (userInfo.nickname || userInfo.profile?.nickname) {
+              wx.setStorageSync('userNickname', userInfo.nickname || userInfo.profile?.nickname);
+            }
+            if (userInfo.avatar || userInfo.profile?.avatar) {
+              wx.setStorageSync('userAvatar', userInfo.avatar || userInfo.profile?.avatar);
+            }
+          }
+          
+          wx.showToast({
+            title: '登录成功',
+            icon: 'success',
+            duration: 2000,
+            success: () => {
+              wx.switchTab({
+                url: `/pages/my/index`,
+              });
+            }
+          });
+        } else {
+          wx.showToast({
+            title: '登录成功但未获取到令牌',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      });
     } catch (error) {
       console.error('登录失败:', error);
-      let errorMsg = '登录失败';
-      if (error.data && error.data.detail) {
-        errorMsg = error.data.detail;
-      }
-      wx.showToast({
-        title: errorMsg,
-        icon: 'error',
-        duration: 2000
-      });
+      showApiError(error);
     }
   },
 
@@ -162,33 +174,41 @@ Page({
         username: this.data.registerInfo.username,
         password: this.data.registerInfo.password,
         nickname: this.data.registerInfo.nickname,
-        email: this.data.registerInfo.email || undefined,
-        phone: this.data.registerInfo.phone || undefined
+        email: this.data.registerInfo.email || '',
+        phone: this.data.registerInfo.phone || ''
       };
 
       const res = await request('/auth/register', 'post', registerData);
+      console.log('注册响应:', res);
       
-      // 存储令牌
-      await wx.setStorageSync('access_token', res.data.access_token);
-      await wx.setStorageSync('refresh_token', res.data.refresh_token);
-      
-      wx.showToast({
-        title: '注册成功',
-        icon: 'success',
-        duration: 2000,
-        success: () => {
-          wx.switchTab({
-            url: `/pages/my/index`,
-          });
+      handleApiResponse(res, (userData) => {
+        // 注册成功处理
+        
+        // 如果返回了token
+        if (userData.access_token) {
+          wx.setStorageSync('access_token', userData.access_token);
+          if (userData.refresh_token) {
+            wx.setStorageSync('refresh_token', userData.refresh_token);
+          }
         }
+        
+        // 将注册时输入的昵称保存到storage中
+        wx.setStorageSync('userNickname', this.data.registerInfo.nickname);
+        
+        wx.showToast({
+          title: '注册成功',
+          icon: 'success',
+          duration: 2000,
+          success: () => {
+            wx.switchTab({
+              url: `/pages/my/index`,
+            });
+          }
+        });
       });
     } catch (error) {
       console.error('注册失败:', error);
-      wx.showToast({
-        title: error.msg || '注册失败',
-        icon: 'error',
-        duration: 2000
-      });
+      showApiError(error);
     }
   },
 
