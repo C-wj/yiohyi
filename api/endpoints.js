@@ -61,6 +61,35 @@ export const ApiEndpoints = {
     UPDATE_MEMBER: { path: '/families/members/:id', method: 'put' },
     DELETE_MEMBER: { path: '/families/members/:id', method: 'delete' },
   },
+  
+  // 系统管理相关
+  SYSTEM: {
+    // 角色管理
+    ROLES_LIST: { path: '/admin/roles', method: 'get' },
+    ROLE_CREATE: { path: '/admin/roles', method: 'post' },
+    ROLE_UPDATE: { path: '/admin/roles/:id', method: 'put' },
+    ROLE_DELETE: { path: '/admin/roles/:id', method: 'delete' },
+    
+    // 菜单管理
+    MENUS_LIST: { path: '/admin/menus', method: 'get' },
+    USER_MENUS: { path: '/admin/menus/user', method: 'get' },
+    MENU_CREATE: { path: '/admin/menus', method: 'post' },
+    MENU_UPDATE: { path: '/admin/menus/:id', method: 'put' },
+    MENU_DELETE: { path: '/admin/menus/:id', method: 'delete' },
+    
+    // 字典管理
+    DICT_LIST: { path: '/admin/dictionaries', method: 'get' },
+    DICT_DETAIL: { path: '/admin/dictionaries/:code', method: 'get' },
+    DICT_CREATE: { path: '/admin/dictionaries', method: 'post' },
+    DICT_ITEM_CREATE: { path: '/admin/dictionaries/:typeCode/items', method: 'post' },
+    
+    // 公告管理
+    ANNOUNCEMENT_LIST: { path: '/admin/announcements', method: 'get' },
+    ANNOUNCEMENT_CREATE: { path: '/admin/announcements', method: 'post' },
+    
+    // 系统初始化
+    INIT: { path: '/admin/init', method: 'post' },
+  },
 };
 
 /**
